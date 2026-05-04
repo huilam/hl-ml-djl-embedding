@@ -1,10 +1,8 @@
 package hl.ml.djl.transformer.embedding.MiniBERT;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
+import hl.ml.djl.transformer.embedding.common.DjlModelConfig;
 import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
 
 public class AllMiniLM extends EmbeddingCommon{
@@ -14,12 +12,16 @@ public class AllMiniLM extends EmbeddingCommon{
     
 	protected AllMiniLM()
 	{
-		Map<String, Object> mapArgs = new HashMap<>();
-		mapArgs.put("padding", "true");
-		mapArgs.put("truncation", "true");
-		mapArgs.put("includeTokenTypes", "true");
-	    
-		super(AllMiniLM.class, DJLConstants.RT_ENGINE_ONNX, model_name, mapArgs);
+		DjlModelConfig config = new DjlModelConfig();
+		//
+		config.setModel_name(model_name);
+		config.setRuntime_engine(DJLConstants.RT_ENGINE_ONNX);
+		//
+		config.addOptArg("padding", "true");
+		config.addOptArg("truncation", "true");
+		config.addOptArg("includeTokenTypes", "true"); 
+		//
+		super(AllMiniLM.class, config);
 	}
 	
 	public static AllMiniLM getInstance()

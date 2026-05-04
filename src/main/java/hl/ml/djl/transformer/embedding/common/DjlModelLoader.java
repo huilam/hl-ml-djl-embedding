@@ -11,25 +11,15 @@ import ai.djl.repository.zoo.ZooModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Properties;
-import hl.common.PropUtil;
 
 public class DjlModelLoader {
 	
-	
-	public static Properties loadConfig(File aConfigFile)
+	public static Predictor<String, float[]> loadModel(final DjlModelConfig aConfig)
 	{
-		Properties prop = new Properties();
-		try {
-			prop = PropUtil.loadProperties(aConfigFile.getAbsolutePath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return prop;
+		return loadModel(aConfig.getRuntime_engine(), aConfig.getModel_uri(), aConfig.getOptArgs());
 	}
 	
-	public static Predictor<String, float[]> loadModel(final String aRTEngine, String aModelPath, final Map<String,Object> aMapArgs)
+	private static Predictor<String, float[]> loadModel(final String aRTEngine, String aModelPath, final Map<String,Object> aMapArgs)
 	{
 		long lStartMs = System.currentTimeMillis();
 		

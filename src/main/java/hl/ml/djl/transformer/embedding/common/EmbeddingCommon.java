@@ -9,25 +9,24 @@ import ai.djl.translate.TranslateException;
 
 public class EmbeddingCommon {
 	
-	protected String model_name = null;
-	protected String rt_engine 	= null;
+	protected DjlModelConfig djl_model_config = null;
 	
 	protected Predictor<String, float[]> predictor = null;
 	private boolean model_init_ok = false;
 
 	@SuppressWarnings("rawtypes")
-	protected EmbeddingCommon(Class aImplClass, final String aRtEngine, String aModelName, Map<String, Object> aMapArgs)
+	protected EmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
 	{
-		setModel_name(aModelName);
-		setRt_engine(aRtEngine);
+		if(aDjlModelConfig.getModel_uri()==null)
+		{
+			URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
+			String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
+			aDjlModelConfig.setModel_uri(sModelFolder);
+		}
 		
-		URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-
-		String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
-		
-		this.predictor = DjlModelLoader.loadModel(aRtEngine, sModelFolder + getModel_name(), aMapArgs);
-		
+		this.predictor = DjlModelLoader.loadModel(aDjlModelConfig);
 		this.model_init_ok = true;
+		this.djl_model_config = aDjlModelConfig;
 	}
 	
     public boolean isModelInitOk() {
@@ -35,19 +34,11 @@ public class EmbeddingCommon {
 	}
     
     public String getRt_engine() {
-		return rt_engine;
+		return djl_model_config.getRuntime_engine();
 	}
 
-	public void setRt_engine(String rt_engine) {
-		this.rt_engine = rt_engine;
-	}
-    
     public String getModel_name() {
-		return model_name;
-	}
-
-	public void setModel_name(String model_name) {
-		this.model_name = model_name;
+		return djl_model_config.getModel_name();
 	}
 
 	protected double cosineSimilarity(float[] v1, float[] v2) {

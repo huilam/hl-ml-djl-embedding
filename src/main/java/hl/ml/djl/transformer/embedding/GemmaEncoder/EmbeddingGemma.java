@@ -1,10 +1,8 @@
 package hl.ml.djl.transformer.embedding.GemmaEncoder;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
+import hl.ml.djl.transformer.embedding.common.DjlModelConfig;
 import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
 
 public class EmbeddingGemma extends EmbeddingCommon{
@@ -14,14 +12,18 @@ public class EmbeddingGemma extends EmbeddingCommon{
 	private final static String model_name = "embeddinggemma-300m";
     
 	protected EmbeddingGemma()
-	{	
-		Map<String, Object> mapArgs = new HashMap<>();
-		mapArgs.put("padding", "true");
-		mapArgs.put("truncation", "true");
-		mapArgs.put("pooling", "mean"); 
-		mapArgs.put("includeTokenTypes", "false"); // Gemma is decoder-only
-		
-		super(EmbeddingGemma.class, DJLConstants.RT_ENGINE_ONNX, model_name, mapArgs);
+	{			
+		DjlModelConfig config = new DjlModelConfig();
+		//
+		config.setModel_name(model_name);
+		config.setRuntime_engine(DJLConstants.RT_ENGINE_ONNX);
+		//
+		config.addOptArg("padding", "true");
+		config.addOptArg("truncation", "true");
+		config.addOptArg("pooling", "mean"); 
+		config.addOptArg("includeTokenTypes", "false"); // Gemma is decoder-only
+		//
+		super(EmbeddingGemma.class, config);
 	}
 	
 	public static EmbeddingGemma getInstance()
