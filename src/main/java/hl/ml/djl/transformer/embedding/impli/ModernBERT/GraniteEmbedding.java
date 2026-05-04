@@ -1,18 +1,17 @@
-package hl.ml.djl.transformer.embedding.GemmaEncoder;
+package hl.ml.djl.transformer.embedding.impli.ModernBERT;
 
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
 import hl.ml.djl.transformer.embedding.common.DjlModelConfig;
 import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
 
-public class EmbeddingGemma extends EmbeddingCommon{
+public class GraniteEmbedding extends EmbeddingCommon{
 	
-	private static EmbeddingGemma instant = null;
-	
-	private final static String model_name = "embeddinggemma-300m";
+	private static GraniteEmbedding instant = null;
+	private final static String model_name = "granite-embedding-english-r2";
     
-	protected EmbeddingGemma()
-	{			
+	protected GraniteEmbedding()
+	{	
 		DjlModelConfig config = new DjlModelConfig();
 		//
 		config.setModel_name(model_name);
@@ -23,19 +22,19 @@ public class EmbeddingGemma extends EmbeddingCommon{
 		config.addOptArg("pooling", "mean"); 
 		config.addOptArg("includeTokenTypes", "false"); // Gemma is decoder-only
 		//
-		super(EmbeddingGemma.class, config);
+		super(GraniteEmbedding.class, config);
 	}
 	
-	public static EmbeddingGemma getInstance()
+	public static GraniteEmbedding getInstance()
 	{
 		if(instant==null)
 		{
-			instant = new EmbeddingGemma();
+			instant = new GraniteEmbedding();
 		}
 		return instant;
 	}
 	
 	public static void main(String[] args) throws TranslateException {
-		EmbeddingCommon.unit_test_1( EmbeddingGemma.getInstance() );
+		EmbeddingCommon.unit_test_1( GraniteEmbedding.getInstance() );
     }
 }

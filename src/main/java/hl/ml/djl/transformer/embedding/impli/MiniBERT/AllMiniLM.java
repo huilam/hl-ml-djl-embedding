@@ -1,4 +1,4 @@
-package hl.ml.djl.transformer.embedding.MiniBERT;
+package hl.ml.djl.transformer.embedding.impli.MiniBERT;
 
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
