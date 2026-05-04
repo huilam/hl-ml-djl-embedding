@@ -1,4 +1,4 @@
-package hl.ml.djl;
+package hl.ml.djl.transformer.embedding.common;
 
 public class DJLConstants {
 	

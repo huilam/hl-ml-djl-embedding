@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.DJLConstants;
-import hl.ml.djl.transformer.embedding.EmbeddingCommon;
+import hl.ml.djl.transformer.embedding.common.DJLConstants;
+import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
 
 public class EmbeddingGemma extends EmbeddingCommon{
 	

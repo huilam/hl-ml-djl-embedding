@@ -1,4 +1,4 @@
-package hl.ml.djl.transformer.embedding;
+package hl.ml.djl.transformer.embedding.common;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.Map;
 
 import ai.djl.inference.Predictor;
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.DjlModelLoader;
 
 public class EmbeddingCommon {
 	

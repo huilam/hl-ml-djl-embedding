@@ -1,4 +1,4 @@
-package hl.ml.djl;
+package hl.ml.djl.transformer.embedding.common;
 
 import ai.djl.Device;
 import ai.djl.MalformedModelException;
@@ -11,8 +11,23 @@ import ai.djl.repository.zoo.ZooModel;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
+import hl.common.PropUtil;
 
 public class DjlModelLoader {
+	
+	
+	public static Properties loadConfig(File aConfigFile)
+	{
+		Properties prop = new Properties();
+		try {
+			prop = PropUtil.loadProperties(aConfigFile.getAbsolutePath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return prop;
+	}
 	
 	public static Predictor<String, float[]> loadModel(final String aRTEngine, String aModelPath, final Map<String,Object> aMapArgs)
 	{
