@@ -1,4 +1,4 @@
-package hl.ml.djl.transformer.embedding.impli.ModernBERT;
+package hl.ml.djl.transformer.embedding.impl.ModernBERT;
 
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;

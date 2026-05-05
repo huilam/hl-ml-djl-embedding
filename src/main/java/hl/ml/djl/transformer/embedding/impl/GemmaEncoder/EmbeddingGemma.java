@@ -1,4 +1,4 @@
-package hl.ml.djl.transformer.embedding.impli.GemmaEncoder;
+package hl.ml.djl.transformer.embedding.impl.GemmaEncoder;
 
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
