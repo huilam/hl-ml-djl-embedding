@@ -37,6 +37,8 @@ public class AllMiniLM extends EmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 		EmbeddingCommon.unit_test_1( AllMiniLM.getInstance() );
+		
+		EmbeddingCommon.unit_test_topK( AllMiniLM.getInstance() );
     }
 	
 }

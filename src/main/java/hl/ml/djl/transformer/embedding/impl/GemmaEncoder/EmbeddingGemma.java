@@ -37,5 +37,7 @@ public class EmbeddingGemma extends EmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 		EmbeddingCommon.unit_test_1( EmbeddingGemma.getInstance() );
+		
+		EmbeddingCommon.unit_test_topK( EmbeddingGemma.getInstance() );
     }
 }

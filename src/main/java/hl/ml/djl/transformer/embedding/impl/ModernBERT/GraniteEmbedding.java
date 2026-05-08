@@ -36,5 +36,7 @@ public class GraniteEmbedding extends EmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 		EmbeddingCommon.unit_test_1( GraniteEmbedding.getInstance() );
+		
+		EmbeddingCommon.unit_test_topK( GraniteEmbedding.getInstance() );
     }
 }
