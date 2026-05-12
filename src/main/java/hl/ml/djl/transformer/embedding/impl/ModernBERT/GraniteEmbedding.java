@@ -37,8 +37,6 @@ public class GraniteEmbedding extends EmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 		
-		UnitTest.testSimilarSentence( GraniteEmbedding.getInstance() );
-		
-		UnitTest.testTopKSimilarWords( GraniteEmbedding.getInstance() );
+		UnitTest.testAll( GraniteEmbedding.getInstance() );
     }
 }

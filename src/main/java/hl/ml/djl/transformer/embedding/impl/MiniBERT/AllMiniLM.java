@@ -38,9 +38,8 @@ public class AllMiniLM extends EmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 		
-		UnitTest.testSimilarSentence( AllMiniLM.getInstance() );
+		UnitTest.testAll( AllMiniLM.getInstance() );
 		
-		UnitTest.testTopKSimilarWords( AllMiniLM.getInstance() );
     }
 	
 }

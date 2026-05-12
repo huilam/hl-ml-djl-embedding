@@ -38,8 +38,7 @@ public class EmbeddingGemma extends EmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 
-		UnitTest.testSimilarSentence( EmbeddingGemma.getInstance() );
+		UnitTest.testAll( EmbeddingGemma.getInstance() );
 		
-		UnitTest.testTopKSimilarWords( EmbeddingGemma.getInstance() );
     }
 }
