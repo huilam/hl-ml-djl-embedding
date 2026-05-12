@@ -4,6 +4,7 @@ import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
 import hl.ml.djl.transformer.embedding.common.DjlModelConfig;
 import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
+import hl.ml.djl.transformer.embedding.common.test.UnitTest;
 
 public class EmbeddingGemma extends EmbeddingCommon{
 	
@@ -36,8 +37,9 @@ public class EmbeddingGemma extends EmbeddingCommon{
 	}
 	
 	public static void main(String[] args) throws TranslateException {
-		EmbeddingCommon.unit_test_1( EmbeddingGemma.getInstance() );
+
+		UnitTest.testSimilarSentence( EmbeddingGemma.getInstance() );
 		
-		EmbeddingCommon.unit_test_topK( EmbeddingGemma.getInstance() );
+		UnitTest.testTopKSimilarWords( EmbeddingGemma.getInstance() );
     }
 }

@@ -2,7 +2,6 @@ package hl.ml.djl.transformer.embedding.common;
 
 import java.net.URL;
 import java.util.AbstractMap;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,7 +55,7 @@ public class EmbeddingCommon {
         return dot / (Math.sqrt(n1) * Math.sqrt(n2));
     }
     ///////////////////////////
-	protected Map<String, Double> getTopKSimilarity(String aText, String[] aTargetTexts, 
+	public Map<String, Double> getTopKSimilarity(String aText, String[] aTargetTexts, 
 			double aMinThreshold, int aTopK) throws TranslateException 
 	{
 		Map<float[], String> mapTextEmbedding = new HashMap<float[], String>();
@@ -149,42 +148,4 @@ public class EmbeddingCommon {
     	return mapEmbeddings;
     }
     
-	protected static void unit_test_1(EmbeddingCommon embedding) throws TranslateException {
-		
-		long lAppStart = System.currentTimeMillis();
-		
-        String s1 = "The weather is very sunny today.";
-        String s2 = "It is a bright and sun-filled day.";
-        
-        long lInferenceStart = System.currentTimeMillis();
-        System.out.println("Model Name: " + embedding.getModel_name());
-        System.out.println("Similarity Score: " + embedding.calcSimilarityScore(s1, s2));
-        System.out.println("Inference Time = "+(System.currentTimeMillis()-lInferenceStart)+" ms");
-        
-        System.out.println("App Elapsed Time = "+(System.currentTimeMillis()-lAppStart)+" ms");
-    }
-	
-	protected static void unit_test_topK(EmbeddingCommon embedding) throws TranslateException {
-		
-		long lAppStart = System.currentTimeMillis();
-		
-		String sText = "Artificial Intelligence";
-		
-		String[] sSentences = 
-				new String[]{"Machine Learning", "Deep Learning", "Neural Networks", "Robotics", "Data Science"};
-        
-        long lInferenceStart = System.currentTimeMillis();
-        Map<String, Double> mapMatches = embedding.getTopKSimilarity(sText, sSentences, 0.1, -1);
-        System.out.println("Model Name: " + embedding.getModel_name());
-        System.out.println("Inference Time = "+(System.currentTimeMillis()-lInferenceStart)+" ms");
-
-        for(String sString : mapMatches.keySet())
-        {
-        	 System.out.println("  " + sString+" = "+mapMatches.get(sString));
-        }
-        
-       
-        
-        System.out.println("App Elapsed Time = "+(System.currentTimeMillis()-lAppStart)+" ms");
-    }
 }

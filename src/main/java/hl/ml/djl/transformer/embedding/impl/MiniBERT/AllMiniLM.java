@@ -4,6 +4,7 @@ import ai.djl.translate.TranslateException;
 import hl.ml.djl.transformer.embedding.common.DJLConstants;
 import hl.ml.djl.transformer.embedding.common.DjlModelConfig;
 import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
+import hl.ml.djl.transformer.embedding.common.test.UnitTest;
 
 public class AllMiniLM extends EmbeddingCommon{
 	
@@ -36,9 +37,10 @@ public class AllMiniLM extends EmbeddingCommon{
 	
 	
 	public static void main(String[] args) throws TranslateException {
-		EmbeddingCommon.unit_test_1( AllMiniLM.getInstance() );
 		
-		EmbeddingCommon.unit_test_topK( AllMiniLM.getInstance() );
+		UnitTest.testSimilarSentence( AllMiniLM.getInstance() );
+		
+		UnitTest.testTopKSimilarWords( AllMiniLM.getInstance() );
     }
 	
 }
