@@ -1,4 +1,4 @@
-# hl-ml-djl
+# hl-ml-djl-embedding
 
 LLM inferencing based on DeepJavaLibrary 
 
