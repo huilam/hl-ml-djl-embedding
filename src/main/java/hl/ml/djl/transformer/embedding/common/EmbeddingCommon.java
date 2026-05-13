@@ -25,12 +25,12 @@ public class EmbeddingCommon {
 		{
 			URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
 			String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
-			aDjlModelConfig.setModel_uri(sModelFolder);
+			aDjlModelConfig.setModel_uri( sModelFolder + aDjlModelConfig.getModel_name());
 		}
 		
 		this.predictor = DjlModelLoader.loadModel(aDjlModelConfig);
-		this.model_init_ok = true;
 		this.djl_model_config = aDjlModelConfig;
+		this.model_init_ok = true;
 	}
 	
     public boolean isModelInitOk() {
