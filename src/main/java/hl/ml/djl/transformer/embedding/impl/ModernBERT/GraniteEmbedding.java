@@ -9,13 +9,15 @@ import hl.ml.djl.transformer.embedding.common.test.UnitTest;
 public class GraniteEmbedding extends EmbeddingCommon{
 	
 	private static GraniteEmbedding instant = null;
-	private final static String model_name = "granite-embedding-english-r2";
+	private final static String[] model_names = new String[]{
+			"granite-embedding-english-r2",
+			"granite-embedding-97m-multilingual-r2"};
     
 	protected GraniteEmbedding()
 	{	
 		DjlModelConfig config = new DjlModelConfig();
 		//
-		config.setModel_name(model_name);
+		config.setModel_name(model_names[0]);
 		config.setRuntime_engine(DJLConstants.RT_ENGINE_ONNX);
 		//
 		config.addOptArg("padding", "true");
