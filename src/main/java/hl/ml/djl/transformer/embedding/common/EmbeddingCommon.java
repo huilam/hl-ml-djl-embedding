@@ -8,14 +8,22 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer;
+import ai.djl.huggingface.translator.TextEmbeddingTranslator;
 import ai.djl.inference.Predictor;
+import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
+import ai.djl.translate.Translator;
 
 public class EmbeddingCommon {
 	
 	protected DjlModelConfig djl_model_config = null;
 	
 	protected Predictor<String, float[]> predictor = null;
+	protected ZooModel<String, float[]> model = null;
+	protected int embedding_output_size = 0;
+	protected Map<String, String> model_prop = null;
+	
 	private boolean model_init_ok = false;
 
 	@SuppressWarnings("rawtypes")
@@ -28,9 +36,32 @@ public class EmbeddingCommon {
 			aDjlModelConfig.setModel_uri( sModelFolder + aDjlModelConfig.getModel_name());
 		}
 		
-		this.predictor = DjlModelLoader.loadModel(aDjlModelConfig);
-		this.djl_model_config = aDjlModelConfig;
-		this.model_init_ok = true;
+		this.model = DjlModelLoader.loadModel(aDjlModelConfig);
+		
+		if(this.model!=null)
+		{
+			this.predictor = this.model.newPredictor();
+			
+			try {
+				float[] test = this.predictor.predict("test");
+				this.embedding_output_size = test.length;
+				this.djl_model_config = aDjlModelConfig;
+				this.model_prop = this.model.getProperties();
+				/**
+				for(String sKey : this.model_prop.keySet())
+				{
+					System.out.println(sKey+" = "+this.model_prop.get(sKey));
+				}
+				**/
+				
+				this.model_init_ok = true;
+			} catch (TranslateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
 	}
 	
     public boolean isModelInitOk() {
@@ -43,6 +74,14 @@ public class EmbeddingCommon {
 
     public String getModel_name() {
 		return djl_model_config.getModel_name();
+	}
+    
+    public int getInputContentLength() {
+		return Integer.parseInt(this.model_prop.getOrDefault("max_seq_length","-1"));
+	}
+    
+    public int getOutputEmbeddingSize() {
+		return embedding_output_size;
 	}
 
 	protected double cosineSimilarity(float[] v1, float[] v2) {

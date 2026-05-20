@@ -14,12 +14,12 @@ import java.util.Map;
 
 public class DjlModelLoader {
 	
-	public static Predictor<String, float[]> loadModel(final DjlModelConfig aConfig)
+	public static ZooModel<String, float[]> loadModel(final DjlModelConfig aConfig)
 	{
 		return loadModel(aConfig.getRuntime_engine(), aConfig.getModel_uri(), aConfig.getOptArgs());
 	}
 	
-	private static Predictor<String, float[]> loadModel(final String aRTEngine, String aModelPath, final Map<String,Object> aMapArgs)
+	private static ZooModel<String, float[]> loadModel(final String aRTEngine, String aModelPath, final Map<String,Object> aMapArgs)
 	{
 		long lStartMs = System.currentTimeMillis();
 		
@@ -29,7 +29,7 @@ public class DjlModelLoader {
 			aModelPath = aModelPath.substring(iPos+1);
 		}
 		
-		Predictor<String, float[]> predictor = null;
+		
 		File folderModel = new File(aModelPath);
 		if(!folderModel.exists())
 		{
@@ -68,10 +68,10 @@ public class DjlModelLoader {
 		
 		if(model!=null)
 		{
-			predictor = model.newPredictor();
+			return model;
 		}
 		
-		return predictor;
+		return null;
 	}
 
 }

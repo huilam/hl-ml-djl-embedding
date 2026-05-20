@@ -7,6 +7,14 @@ import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
 
 public class UnitTest {
 	
+	private static void printModelInfo(EmbeddingCommon embedding)
+	{
+        
+        System.out.println("Model Name: " + embedding.getModel_name());
+        System.out.println("Input Size: " + embedding.getInputContentLength());
+        System.out.println("Output Size: " + embedding.getOutputEmbeddingSize());
+	}
+	
 	public static void testSimilarSentence(EmbeddingCommon embedding) throws TranslateException {
 		
 		long lAppStart = System.currentTimeMillis();
@@ -17,8 +25,7 @@ public class UnitTest {
         long lInferenceStart = System.currentTimeMillis();
         
         System.out.println("====== testSimilarSentence ======");
-        
-        System.out.println("Model Name: " + embedding.getModel_name());
+        printModelInfo(embedding);
         
         System.out.println(String.format("    %.4f = %s -vs- %s", embedding.calcSimilarityScore(s1, s2), s1, s2));
 
@@ -35,7 +42,7 @@ public class UnitTest {
 		Map<String,String> mapSentences = new HashMap<>();
 		
 	    System.out.println("====== testSentencePair_Similar ======");
-	    System.out.println("Model Name: " + embedding.getModel_name());
+	    printModelInfo(embedding);
 	 
 	    // --- 10 Similar Sentence Pairs (Paraphrases) ---
 	    mapSentences.put("How do I reset my password?", 		"I forgot my login credentials and need a new one.");
@@ -61,7 +68,7 @@ public class UnitTest {
 		Map<String,String> mapSentences = new HashMap<>();
 		
 	    System.out.println("====== testSentencePair_Unrelated ======");
-	    System.out.println("Model Name: " + embedding.getModel_name());
+	    printModelInfo(embedding);
 	 
 	    // --- 10 Unrelated Sentence Pairs (Random Topics) ---
 	    mapSentences.put("The stock market fluctuated today.", 			"I prefer my coffee with a bit of milk.");
@@ -87,7 +94,7 @@ public class UnitTest {
 		Map<String,String> mapWords = new HashMap<>();
 		
 	    System.out.println("====== testWordPairs_Similar ======");
-	    System.out.println("Model Name: " + embedding.getModel_name());
+	    printModelInfo(embedding);
 	    
 		// --- Similar Pairs (Action & Items) ---
 	    mapWords.put("sprint", 		"jog");
@@ -113,7 +120,7 @@ public class UnitTest {
 		Map<String,String> mapWords = new HashMap<>();
 		
 	    System.out.println("====== testWordPairs_Unrelated ======");
-	    System.out.println("Model Name: " + embedding.getModel_name());
+	    printModelInfo(embedding);
 	 
 	        
 	    // --- Unrelated Pairs ---
@@ -165,7 +172,7 @@ public class UnitTest {
         Map<String, Double> mapMatches = embedding.getTopKSimilarity(sText, sSentences, 0.5, 6);
         
         System.out.println("====== testTopKSimilarWords ======");
-        System.out.println("Model Name: " + embedding.getModel_name());
+        printModelInfo(embedding);
         System.out.println("Inference Time = "+(System.currentTimeMillis()-lInferenceStart)+" ms");
 
         for(String s2 : mapMatches.keySet())
