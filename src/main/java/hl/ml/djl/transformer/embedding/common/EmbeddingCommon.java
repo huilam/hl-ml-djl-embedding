@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import ai.djl.huggingface.tokenizers.HuggingFaceTokenizer;
-import ai.djl.huggingface.translator.TextEmbeddingTranslator;
 import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
-import ai.djl.translate.Translator;
 
 public class EmbeddingCommon {
 	
