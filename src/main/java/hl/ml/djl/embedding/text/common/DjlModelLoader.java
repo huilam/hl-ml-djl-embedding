@@ -1,9 +1,8 @@
-package hl.ml.djl.transformer.embedding.common;
+package hl.ml.djl.embedding.text.common;
 
 import ai.djl.Device;
 import ai.djl.MalformedModelException;
 import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
-import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;

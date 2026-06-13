@@ -1,9 +1,9 @@
-package hl.ml.djl.transformer.embedding.common.test;
+package hl.ml.djl.embedding.text.common.test;
 
 import java.util.HashMap;
 import java.util.Map;
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
+import hl.ml.djl.embedding.text.common.EmbeddingCommon;
 
 public class UnitTest {
 	

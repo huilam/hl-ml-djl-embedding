@@ -1,10 +1,10 @@
-package hl.ml.djl.transformer.embedding.impl.ModernBERT;
+package hl.ml.djl.embedding.text.impl.ModernBERT;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.transformer.embedding.common.DJLConstants;
-import hl.ml.djl.transformer.embedding.common.DjlModelConfig;
-import hl.ml.djl.transformer.embedding.common.EmbeddingCommon;
-import hl.ml.djl.transformer.embedding.common.test.UnitTest;
+import hl.ml.djl.embedding.text.common.DJLConstants;
+import hl.ml.djl.embedding.text.common.DjlModelConfig;
+import hl.ml.djl.embedding.text.common.EmbeddingCommon;
+import hl.ml.djl.embedding.text.common.test.UnitTest;
 
 public class GraniteEmbedding extends EmbeddingCommon{
 	

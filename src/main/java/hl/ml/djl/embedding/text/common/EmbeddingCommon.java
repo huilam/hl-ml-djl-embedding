@@ -1,4 +1,4 @@
-package hl.ml.djl.transformer.embedding.common;
+package hl.ml.djl.embedding.text.common;
 
 import java.net.URL;
 import java.util.AbstractMap;
