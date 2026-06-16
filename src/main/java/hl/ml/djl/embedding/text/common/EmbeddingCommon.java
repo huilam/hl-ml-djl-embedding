@@ -8,9 +8,13 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ai.djl.Device;
+import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
 import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
+import hl.ml.djl.DjlModelConfig;
+import hl.ml.djl.DjlModelLoader;
 
 public class EmbeddingCommon {
 	
@@ -33,7 +37,10 @@ public class EmbeddingCommon {
 			aDjlModelConfig.setModel_uri( sModelFolder + aDjlModelConfig.getModel_name());
 		}
 		
-		this.model = DjlModelLoader.loadModel(aDjlModelConfig);
+		aDjlModelConfig.setDevice_type(Device.cpu());
+		
+		this.model = DjlModelLoader.loadModel(aDjlModelConfig, 
+				new TextEmbeddingTranslatorFactory());
 		
 		if(this.model!=null)
 		{

@@ -1,11 +1,11 @@
-package hl.ml.djl.embedding.text.common;
+package hl.ml.djl;
 
 import ai.djl.Device;
 import ai.djl.MalformedModelException;
-import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.translate.TranslatorFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,12 +13,24 @@ import java.util.Map;
 
 public class DjlModelLoader {
 	
-	public static ZooModel<String, float[]> loadModel(final DjlModelConfig aConfig)
+	public static ZooModel<String, float[]> loadModel(
+			final DjlModelConfig aConfig,
+			final TranslatorFactory aTranslatorFactory)
 	{
-		return loadModel(aConfig.getRuntime_engine(), aConfig.getModel_uri(), aConfig.getOptArgs());
+		return loadModel(
+				aConfig.getRuntime_engine(), 
+				aConfig.getModel_uri(), 
+				aConfig.getOptArgs(),
+				aConfig.getDevice_type(),
+				aTranslatorFactory);
 	}
 	
-	private static ZooModel<String, float[]> loadModel(final String aRTEngine, String aModelPath, final Map<String,Object> aMapArgs)
+	private static ZooModel<String, float[]> loadModel(
+			final String aRTEngine, 
+			String aModelPath, 
+			final Map<String,Object> aMapArgs,
+			final Device aDevice,
+			final TranslatorFactory aTranslatorFactory)
 	{
 		long lStartMs = System.currentTimeMillis();
 		
@@ -41,20 +53,21 @@ public class DjlModelLoader {
 		
         // In 0.36.0, we use optArgument to pass configuration 
         // and let the ServiceLoader find the translator automatically.
-		Criteria<String, float[]> criteria = Criteria.builder()
+		Criteria.Builder<String, float[]> builder = Criteria.builder()
         	    .setTypes(String.class, float[].class)
         	    .optEngine(aRTEngine)
-        	    .optModelUrls(folderModel.getAbsolutePath()) // DJL looks here first
+        	    .optModelUrls(folderModel.getAbsolutePath()); // DJL looks here first
         	    
-        	    // FORCE CPU HERE
-        	    .optDevice(Device.cpu())
+        if(aDevice!=null)
+        	builder.optDevice(aDevice);
         	
-        	    //Optional args
-        	    .optArguments(aMapArgs)
-        	    
-        	    //HuggingFace extension for DJL
-        	    .optTranslatorFactory(new TextEmbeddingTranslatorFactory())
-        	    .build();
+        if(aMapArgs!=null && aMapArgs.size()>0)
+        	builder.optArguments(aMapArgs);
+		
+		if(aTranslatorFactory!=null)
+			builder.optTranslatorFactory(aTranslatorFactory);
+
+        Criteria<String, float[]> criteria = builder.build();
 		
 		ZooModel<String, float[]> model = null;
 		try {

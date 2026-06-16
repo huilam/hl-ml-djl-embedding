@@ -1,14 +1,14 @@
 package hl.ml.djl.embedding.text.impl.ModernBERT;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.embedding.text.common.DJLConstants;
-import hl.ml.djl.embedding.text.common.DjlModelConfig;
+import hl.ml.djl.DJLConstants;
+import hl.ml.djl.DjlModelConfig;
 import hl.ml.djl.embedding.text.common.EmbeddingCommon;
 import hl.ml.djl.embedding.text.common.test.UnitTest;
 
 public class GraniteEmbedding extends EmbeddingCommon{
 	
-	private static GraniteEmbedding instant = null;
+	private static GraniteEmbedding instance = null;
 	private final static String[] model_names = new String[]{
 			"granite-embedding-english-r2",
 			"granite-embedding-97m-multilingual-r2"};
@@ -30,11 +30,11 @@ public class GraniteEmbedding extends EmbeddingCommon{
 	
 	public static GraniteEmbedding getInstance()
 	{
-		if(instant==null)
+		if(instance==null)
 		{
-			instant = new GraniteEmbedding();
+			instance = new GraniteEmbedding();
 		}
-		return instant;
+		return instance;
 	}
 	
 	public static void main(String[] args) throws TranslateException {

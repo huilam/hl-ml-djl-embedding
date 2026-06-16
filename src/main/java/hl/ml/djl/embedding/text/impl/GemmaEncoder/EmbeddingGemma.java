@@ -1,14 +1,14 @@
 package hl.ml.djl.embedding.text.impl.GemmaEncoder;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.embedding.text.common.DJLConstants;
-import hl.ml.djl.embedding.text.common.DjlModelConfig;
+import hl.ml.djl.DJLConstants;
+import hl.ml.djl.DjlModelConfig;
 import hl.ml.djl.embedding.text.common.EmbeddingCommon;
 import hl.ml.djl.embedding.text.common.test.UnitTest;
 
 public class EmbeddingGemma extends EmbeddingCommon{
 	
-	private static EmbeddingGemma instant = null;
+	private static EmbeddingGemma instance = null;
 	
 	private final static String model_name = "embeddinggemma-300m";
     
@@ -29,11 +29,11 @@ public class EmbeddingGemma extends EmbeddingCommon{
 	
 	public static EmbeddingGemma getInstance()
 	{
-		if(instant==null)
+		if(instance==null)
 		{
-			instant = new EmbeddingGemma();
+			instance = new EmbeddingGemma();
 		}
-		return instant;
+		return instance;
 	}
 	
 	public static void main(String[] args) throws TranslateException {

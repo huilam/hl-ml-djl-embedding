@@ -1,4 +1,4 @@
-package hl.ml.djl.embedding.text.common;
+package hl.ml.djl;
 
 public class DJLConstants {
 	

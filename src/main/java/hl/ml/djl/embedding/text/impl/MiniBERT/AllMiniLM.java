@@ -1,14 +1,14 @@
 package hl.ml.djl.embedding.text.impl.MiniBERT;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.embedding.text.common.DJLConstants;
-import hl.ml.djl.embedding.text.common.DjlModelConfig;
+import hl.ml.djl.DJLConstants;
+import hl.ml.djl.DjlModelConfig;
 import hl.ml.djl.embedding.text.common.EmbeddingCommon;
 import hl.ml.djl.embedding.text.common.test.UnitTest;
 
 public class AllMiniLM extends EmbeddingCommon{
 	
-	private static AllMiniLM instant = null;
+	private static AllMiniLM instance = null;
 	private final static String model_name		= "all-MiniLM-L12-v2";
     
 	protected AllMiniLM()
@@ -27,11 +27,11 @@ public class AllMiniLM extends EmbeddingCommon{
 	
 	public static AllMiniLM getInstance()
 	{
-		if(instant==null)
+		if(instance==null)
 		{
-			instant = new AllMiniLM();
+			instance = new AllMiniLM();
 		}
-		return instant;
+		return instance;
 	}
 	
 	

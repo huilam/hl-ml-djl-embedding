@@ -1,13 +1,16 @@
-package hl.ml.djl.embedding.text.common;
+package hl.ml.djl;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import ai.djl.Device;
+
 public class DjlModelConfig {
 	
-	public static final String RT_ENGINE_ONNX = "OnnxRuntime";
-	public static final String RT_ENGINE_PYTORCH = "PyTorch";
+	public static final String RT_ENGINE_ONNX 		= "OnnxRuntime";
+	public static final String RT_ENGINE_PYTORCH 	= "PyTorch";
 	
+	private Device device_type				= Device.cpu();
 	private String model_name 				= null;
 	private String model_uri 				= null;
 	private String runtime_engine 			= DJLConstants.RT_ENGINE_ONNX;
@@ -32,6 +35,14 @@ public class DjlModelConfig {
 	}
 	public void setRuntime_engine(String runtime_engine) {
 		this.runtime_engine = runtime_engine;
+	}
+	
+	public Device getDevice_type() {
+		return device_type;
+	}
+	
+	public void setDevice_type(Device device_type) {
+		this.device_type = device_type;
 	}
 	
 	public void clearOptArgs()
