@@ -16,6 +16,25 @@ public class DjlModelConfig {
 	private String runtime_engine 			= DjlConstants.RT_ENGINE_ONNX;
 	private Map<String, Object> mapOptArgs 	= new HashMap<>();
 	
+	private Class<?> model_input_class 		= null;
+	private Class<?> model_output_class 	= null;
+	
+	public void setModel_io_class(Class aInputClass, Class aOutputClass)
+	{
+		this.model_input_class 	= aInputClass;
+		this.model_output_class = aOutputClass;
+	}
+	
+	public Class<?> getModel_output_class()
+	{
+		return this.model_output_class;
+	}
+	
+	public Class<?> getModel_input_class()
+	{
+		return this.model_input_class;
+	}
+	
 	public String getModel_name() {
 		return model_name;
 	}

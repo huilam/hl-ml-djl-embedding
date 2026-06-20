@@ -22,6 +22,8 @@ public class DjlModelLoader {
 				aConfig.getModel_uri(), 
 				aConfig.getOptArgs(),
 				aConfig.getDevice_type(),
+				aConfig.getModel_input_class(),
+				aConfig.getModel_output_class(),
 				aTranslatorFactory);
 	}
 	
@@ -30,6 +32,8 @@ public class DjlModelLoader {
 			String aModelPath, 
 			final Map<String,Object> aMapArgs,
 			final Device aDevice,
+			final Class aInputClass,
+			final Class aOutputClass,
 			final TranslatorFactory aTranslatorFactory)
 	{
 		long lStartMs = System.currentTimeMillis();
@@ -54,7 +58,7 @@ public class DjlModelLoader {
         // In 0.36.0, we use optArgument to pass configuration 
         // and let the ServiceLoader find the translator automatically.
 		Criteria.Builder<String, float[]> builder = Criteria.builder()
-        	    .setTypes(String.class, float[].class)
+        	    .setTypes(aInputClass, aOutputClass)
         	    .optEngine(aRTEngine)
         	    .optModelUrls(folderModel.getAbsolutePath()); // DJL looks here first
         	    

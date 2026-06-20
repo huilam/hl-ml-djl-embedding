@@ -18,7 +18,9 @@ public class EmbeddingCommon extends DjlBaseImpl{
 	
 	@SuppressWarnings("rawtypes")
 	protected EmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
-	{
+	{	
+		aDjlModelConfig.setModel_io_class(String.class, float[].class);
+		
 		super(aImplClass, aDjlModelConfig, new TextEmbeddingTranslatorFactory());
 		
 		if(this.model_init_ok && this.predictor!=null)
