@@ -4,36 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ai.djl.Device;
+import ai.djl.translate.TranslatorFactory;
 
 public class DjlModelConfig {
 	
 	public static final String RT_ENGINE_ONNX 		= "OnnxRuntime";
 	public static final String RT_ENGINE_PYTORCH 	= "PyTorch";
 	
-	private Device device_type				= Device.cpu();
 	private String model_name 				= null;
 	private String model_uri 				= null;
 	private String runtime_engine 			= DjlConstants.RT_ENGINE_ONNX;
-	private Map<String, Object> mapOptArgs 	= new HashMap<>();
+	//
+	private Device device_type				= Device.cpu();
+	private TranslatorFactory translator_factory 	= null;
+	private Map<String, Object> mapOptArgs 			= new HashMap<>();
 	
-	private Class<?> model_input_class 		= null;
-	private Class<?> model_output_class 	= null;
-	
-	public void setModel_io_class(Class aInputClass, Class aOutputClass)
-	{
-		this.model_input_class 	= aInputClass;
-		this.model_output_class = aOutputClass;
-	}
-	
-	public Class<?> getModel_output_class()
-	{
-		return this.model_output_class;
-	}
-	
-	public Class<?> getModel_input_class()
-	{
-		return this.model_input_class;
-	}
 	
 	public String getModel_name() {
 		return model_name;
@@ -42,6 +27,12 @@ public class DjlModelConfig {
 		this.model_name = model_name;
 	}
 	
+	public TranslatorFactory getTranslator_factory() {
+		return translator_factory;
+	}
+	public void setTranslator_factory(TranslatorFactory translator_factory) {
+		this.translator_factory = translator_factory;
+	}
 	public String getModel_uri() {
 		return model_uri;
 	}

@@ -7,21 +7,30 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import ai.djl.Device;
 import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
+import ai.djl.repository.zoo.Criteria;
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.DjlBaseImpl;
+import hl.ml.djl.AbtractDjlBaseImpl;
 import hl.ml.djl.DjlModelConfig;
 
-public class EmbeddingCommon extends DjlBaseImpl{
+public class EmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	
-	protected int embedding_output_size = 0;
+	protected int embedding_output_size 			= 0;
 	
 	@SuppressWarnings("rawtypes")
 	protected EmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
 	{	
-		aDjlModelConfig.setModel_io_class(String.class, float[].class);
+		//common embedding translator
+		aDjlModelConfig.setTranslator_factory(new TextEmbeddingTranslatorFactory());
+		aDjlModelConfig.setDevice_type(Device.cpu());
 		
-		super(aImplClass, aDjlModelConfig, new TextEmbeddingTranslatorFactory());
+		super(
+			aImplClass, 
+			aDjlModelConfig, 
+			Criteria.builder().setTypes(String.class, float[].class));
+		
+		super.loadModel();
 		
 		if(this.model_init_ok && this.predictor!=null)
 		{
@@ -36,7 +45,8 @@ public class EmbeddingCommon extends DjlBaseImpl{
 	}
 	
     public int getInputContentLength() {
-		return Integer.parseInt(this.model_prop.getOrDefault("max_seq_length","-1"));
+		return Integer.parseInt((String)
+				this.djl_model_config.getOptArgs().getOrDefault("max_seq_length","-1"));
 	}
     
     public int getOutputEmbeddingSize() {
