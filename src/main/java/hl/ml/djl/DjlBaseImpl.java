@@ -3,9 +3,9 @@ package hl.ml.djl;
 import java.net.URL;
 import java.util.Map;
 import ai.djl.Device;
-import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
 import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.translate.TranslatorFactory;
 
 public class DjlBaseImpl {
 	
@@ -20,7 +20,7 @@ public class DjlBaseImpl {
 	protected DjlBaseImpl(
 			Class aImplClass, 
 			DjlModelConfig aDjlModelConfig,
-			TextEmbeddingTranslatorFactory aTextEmbeddingTranslatorFactory)
+			TranslatorFactory aTranslatorFactory)
 	{
 		if(aDjlModelConfig.getModel_uri()==null)
 		{
@@ -33,7 +33,7 @@ public class DjlBaseImpl {
 		
 		this.model = DjlModelLoader.loadModel(
 				aDjlModelConfig, 
-				aTextEmbeddingTranslatorFactory);
+				aTranslatorFactory);
 		
 		if(this.model!=null)
 		{
