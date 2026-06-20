@@ -1,7 +1,7 @@
 package hl.ml.djl.embedding.text.impl.ModernBERT;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.DJLConstants;
+import hl.ml.djl.DjlConstants;
 import hl.ml.djl.DjlModelConfig;
 import hl.ml.djl.embedding.text.common.EmbeddingCommon;
 import hl.ml.djl.embedding.text.common.test.UnitTest;
@@ -18,7 +18,7 @@ public class GraniteEmbedding extends EmbeddingCommon{
 		DjlModelConfig config = new DjlModelConfig();
 		//
 		config.setModel_name(model_names[0]);
-		config.setRuntime_engine(DJLConstants.RT_ENGINE_ONNX);
+		config.setRuntime_engine(DjlConstants.RT_ENGINE_ONNX);
 		//
 		config.addOptArg("padding", "true");
 		config.addOptArg("truncation", "true");

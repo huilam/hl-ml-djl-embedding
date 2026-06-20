@@ -13,7 +13,7 @@ public class DjlModelConfig {
 	private Device device_type				= Device.cpu();
 	private String model_name 				= null;
 	private String model_uri 				= null;
-	private String runtime_engine 			= DJLConstants.RT_ENGINE_ONNX;
+	private String runtime_engine 			= DjlConstants.RT_ENGINE_ONNX;
 	private Map<String, Object> mapOptArgs 	= new HashMap<>();
 	
 	public String getModel_name() {
