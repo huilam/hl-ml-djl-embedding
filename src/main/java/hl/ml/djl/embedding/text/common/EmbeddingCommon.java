@@ -1,6 +1,5 @@
 package hl.ml.djl.embedding.text.common;
 
-import java.net.URL;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,78 +7,32 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import ai.djl.Device;
 import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
-import ai.djl.inference.Predictor;
-import ai.djl.repository.zoo.ZooModel;
 import ai.djl.translate.TranslateException;
+import hl.ml.djl.DjlBaseImpl;
 import hl.ml.djl.DjlModelConfig;
-import hl.ml.djl.DjlModelLoader;
 
-public class EmbeddingCommon {
+public class EmbeddingCommon extends DjlBaseImpl{
 	
-	protected DjlModelConfig djl_model_config = null;
-	
-	protected Predictor<String, float[]> predictor = null;
-	protected ZooModel<String, float[]> model = null;
 	protected int embedding_output_size = 0;
-	protected Map<String, String> model_prop = null;
 	
-	private boolean model_init_ok = false;
-
 	@SuppressWarnings("rawtypes")
 	protected EmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
 	{
-		if(aDjlModelConfig.getModel_uri()==null)
+		super(aImplClass, aDjlModelConfig, new TextEmbeddingTranslatorFactory());
+		
+		if(this.model_init_ok && this.predictor!=null)
 		{
-			URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-			String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
-			aDjlModelConfig.setModel_uri( sModelFolder + aDjlModelConfig.getModel_name());
-		}
-		
-		aDjlModelConfig.setDevice_type(Device.cpu());
-		
-		this.model = DjlModelLoader.loadModel(aDjlModelConfig, 
-				new TextEmbeddingTranslatorFactory());
-		
-		if(this.model!=null)
-		{
-			this.predictor = this.model.newPredictor();
-			
 			try {
 				float[] test = this.predictor.predict("test");
 				this.embedding_output_size = test.length;
-				this.djl_model_config = aDjlModelConfig;
-				this.model_prop = this.model.getProperties();
-				/**
-				for(String sKey : this.model_prop.keySet())
-				{
-					System.out.println(sKey+" = "+this.model_prop.get(sKey));
-				}
-				**/
-				
-				this.model_init_ok = true;
 			} catch (TranslateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
 		}
 	}
 	
-    public boolean isModelInitOk() {
-		return this.model_init_ok;
-	}
-    
-    public String getRt_engine() {
-		return djl_model_config.getRuntime_engine();
-	}
-
-    public String getModel_name() {
-		return djl_model_config.getModel_name();
-	}
-    
     public int getInputContentLength() {
 		return Integer.parseInt(this.model_prop.getOrDefault("max_seq_length","-1"));
 	}
