@@ -58,6 +58,8 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 		if(djlModelConfig.getOptArgs()!=null && djlModelConfig.getOptArgs().size()>0)
 	        builder.optArguments(djlModelConfig.getOptArgs());
 		
+		builder.optOptions(djlModelConfig.getOptions());
+		
 		if(djlModelConfig.getTranslator_factory()!=null)
 			builder.optTranslatorFactory(djlModelConfig.getTranslator_factory());
 

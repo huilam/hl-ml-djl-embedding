@@ -15,9 +15,10 @@ public class DjlModelConfig {
 	private String model_uri 				= null;
 	private String runtime_engine 			= DjlConstants.RT_ENGINE_ONNX;
 	//
-	private Device device_type				= Device.cpu();
+	private Device device_type				= null;
 	private TranslatorFactory translator_factory 	= null;
 	private Map<String, Object> mapOptArgs 			= new HashMap<>();
+	private Map<String, String> mapOptions 			= new HashMap<>();
 	
 	
 	public String getModel_name() {
@@ -73,6 +74,21 @@ public class DjlModelConfig {
 	public Map<String, Object> getOptArgs()
 	{
 		return mapOptArgs;
+	}
+	
+	public void addOption(String key, String value)
+	{
+		mapOptions.put(key, value);
+	}
+	
+	public void removeOption(String key, String value)
+	{
+		mapOptions.remove(key, value);
+	}
+	
+	public Map<String, String> getOptions()
+	{
+		return mapOptions;
 	}
 	
 }
