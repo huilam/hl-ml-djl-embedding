@@ -55,8 +55,8 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 		if(djlModelConfig.getDevice_type()!=null)
 			builder.optDevice(djlModelConfig.getDevice_type());
 	        	
-		if(djlModelConfig.getOptArgs()!=null && djlModelConfig.getOptArgs().size()>0)
-	        builder.optArguments(djlModelConfig.getOptArgs());
+		if(djlModelConfig.getMLArgs()!=null && djlModelConfig.getMLArgs().size()>0)
+	        builder.optArguments(djlModelConfig.getMLArgs());
 		
 		builder.optOptions(djlModelConfig.getOptions());
 		

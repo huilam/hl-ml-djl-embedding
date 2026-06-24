@@ -46,7 +46,7 @@ public class EmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	
     public int getInputContentLength() {
 		return Integer.parseInt((String)
-				this.djl_model_config.getOptArgs().getOrDefault("max_seq_length","-1"));
+				this.djl_model_config.getMLArgs().getOrDefault("max_seq_length","-1"));
 	}
     
     public int getOutputEmbeddingSize() {

@@ -20,10 +20,10 @@ public class GraniteEmbedding extends EmbeddingCommon{
 		config.setModel_name(model_names[0]);
 		config.setRuntime_engine(DjlConstants.RT_ENGINE_ONNX);
 		//
-		config.addOptArg("padding", "true");
-		config.addOptArg("truncation", "true");
-		config.addOptArg("pooling", "mean"); 
-		config.addOptArg("includeTokenTypes", "false"); // Gemma is decoder-only
+		config.addMLArg("padding", "true");
+		config.addMLArg("truncation", "true");
+		config.addMLArg("pooling", "mean"); 
+		config.addMLArg("includeTokenTypes", "false"); // Gemma is decoder-only
 		//
 		super(GraniteEmbedding.class, config);
 	}

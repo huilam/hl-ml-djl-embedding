@@ -17,7 +17,7 @@ public class DjlModelConfig {
 	//
 	private Device device_type				= null;
 	private TranslatorFactory translator_factory 	= null;
-	private Map<String, Object> mapOptArgs 			= new HashMap<>();
+	private Map<String, Object> mapMLArgs 			= new HashMap<>();
 	private Map<String, String> mapOptions 			= new HashMap<>();
 	
 	
@@ -56,24 +56,24 @@ public class DjlModelConfig {
 		this.device_type = device_type;
 	}
 	
-	public void clearOptArgs()
+	public void clearMLArgs()
 	{
-		mapOptArgs.clear();
+		mapMLArgs.clear();
 	}
 	
-	public void addOptArg(String key, String value)
+	public void addMLArg(String key, String value)
 	{
-		mapOptArgs.put(key, value);
+		mapMLArgs.put(key, value);
 	}
 	
-	public void removeOptArg(String key, String value)
+	public void removeMLArg(String key, String value)
 	{
-		mapOptArgs.remove(key, value);
+		mapMLArgs.remove(key, value);
 	}
 	
-	public Map<String, Object> getOptArgs()
+	public Map<String, Object> getMLArgs()
 	{
-		return mapOptArgs;
+		return mapMLArgs;
 	}
 	
 	public void addOption(String key, String value)

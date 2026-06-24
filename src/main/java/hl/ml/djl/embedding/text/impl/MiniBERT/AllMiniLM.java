@@ -18,9 +18,9 @@ public class AllMiniLM extends EmbeddingCommon{
 		config.setModel_name(model_name);
 		config.setRuntime_engine(DjlConstants.RT_ENGINE_ONNX);
 		//
-		config.addOptArg("padding", "true");
-		config.addOptArg("truncation", "true");
-		config.addOptArg("includeTokenTypes", "true"); 
+		config.addMLArg("padding", "true");
+		config.addMLArg("truncation", "true");
+		config.addMLArg("includeTokenTypes", "true"); 
 		//
 		super(AllMiniLM.class, config);
 	}
