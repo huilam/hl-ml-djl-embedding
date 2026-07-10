@@ -14,12 +14,12 @@ import ai.djl.translate.TranslateException;
 import hl.ml.djl.AbtractDjlBaseImpl;
 import hl.ml.djl.DjlModelConfig;
 
-public class EmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
+public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	
 	protected int embedding_output_size 			= 0;
 	
 	@SuppressWarnings("rawtypes")
-	protected EmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
+	protected TextEmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
 	{	
 		//common embedding translator
 		aDjlModelConfig.setTranslator_factory(new TextEmbeddingTranslatorFactory());
