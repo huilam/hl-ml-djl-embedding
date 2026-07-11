@@ -6,6 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/main/java/plugins/qwen_embedding"/>
 	<classpathentry kind="src" path="src/main/java/plugins/embeddinggemma"/>
 	<classpathentry kind="src" path="src/main/java/plugins/granite_embedding"/>
 	<classpathentry kind="src" path="src/main/java/plugins/allminilm"/>

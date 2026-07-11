@@ -11,13 +11,14 @@ public class DjlModelConfig {
 	public static final String RT_ENGINE_ONNX 		= "OnnxRuntime";
 	public static final String RT_ENGINE_PYTORCH 	= "PyTorch";
 	
-	private String model_name 				= null;
-	private String model_url 				= null;
-	private String model_folder 			= null;
-	private String model_license 			= null;
-	private String runtime_engine 			= DjlConstants.RT_ENGINE_ONNX;
-	//
-	private Device device_type				= null;
+	private String model_name 			= null;
+	private String model_filename 		= null;
+	private String model_download_url 	= null;
+	private String model_folder 		= null;
+	private String model_license 		= null;
+	private String runtime_engine 		= DjlConstants.RT_ENGINE_ONNX;
+	private Device device_type			= null;
+	
 	private TranslatorFactory translator_factory 	= null;
 	private Map<String, Object> mapMLArgs 			= new HashMap<>();
 	private Map<String, String> mapOptions 			= new HashMap<>();
@@ -36,11 +37,20 @@ public class DjlModelConfig {
 	public void setTranslator_factory(TranslatorFactory translator_factory) {
 		this.translator_factory = translator_factory;
 	}
-	public String getModel_url() {
-		return model_url;
+	
+	public String getModel_download_url() {
+		return model_download_url;
 	}
-	public void setModel_url(String model_url) {
-		this.model_url = model_url;
+	public void setModel_download_url(String model_download_url) {
+		this.model_download_url = model_download_url;
+	}
+	
+	public String getModel_filename() {
+		return model_filename;
+	}
+	
+	public void setModel_filename(String model_filename) {
+		this.model_filename = model_filename;
 	}
 	
 	public String getModel_folder() {
@@ -138,9 +148,10 @@ public class DjlModelConfig {
 	{
 		StringBuilder sb = new StringBuilder();
 		sb.append("model_name="+model_name);
-		sb.append("\n").append(",model_url="+model_url);
+		sb.append("\n").append(",model_download_url="+model_download_url);
 		sb.append("\n").append(",model_license="+model_license);
 		sb.append("\n").append(",model_folder="+model_folder);
+		sb.append("\n").append(",model_filename="+model_filename);
 		sb.append("\n").append(",runtime_engine="+runtime_engine);
 		sb.append("\n").append(",device_type="+device_type);
 		sb.append("\n").append(",translator_factory="+translator_factory);

@@ -13,6 +13,7 @@ import ai.djl.Device;
 import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.translate.TranslateException;
+import ai.djl.translate.TranslatorFactory;
 import hl.common.PropUtil;
 import hl.ml.djl.AbtractDjlBaseImpl;
 import hl.ml.djl.DjlModelConfig;
@@ -65,10 +66,27 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 			for(String sPrefix: sEmbeddingPrefix)
 			{
 				aDjlModelConfig.setModel_name(propEmbedding.getProperty(sPrefix+".name", aDjlModelConfig.getModel_name()));
+				aDjlModelConfig.setModel_download_url(propEmbedding.getProperty(sPrefix+".url", aDjlModelConfig.getModel_download_url()));
 				aDjlModelConfig.setModel_folder(propEmbedding.getProperty(sPrefix+".folder", aDjlModelConfig.getModel_folder()));
-				aDjlModelConfig.setModel_url(propEmbedding.getProperty(sPrefix+".url", aDjlModelConfig.getModel_url()));
+				aDjlModelConfig.setModel_filename(propEmbedding.getProperty(sPrefix+".filename", aDjlModelConfig.getModel_filename()));
 				aDjlModelConfig.setModel_license(propEmbedding.getProperty(sPrefix+".license", aDjlModelConfig.getModel_license()));
 				aDjlModelConfig.setRuntime_engine(propEmbedding.getProperty(sPrefix+".runtime_engine", aDjlModelConfig.getRuntime_engine()));
+				
+				String sTranslatorFactoryClassName = propEmbedding.getProperty(sPrefix+".translator_factory.classname", null);
+				if(sTranslatorFactoryClassName!=null && sTranslatorFactoryClassName.trim().length()>0)
+				{
+					try {
+						Class<?> aTranslatorFactoryClass = Class.forName(sTranslatorFactoryClassName);
+						Object aTranslatorFactoryObj = aTranslatorFactoryClass.getDeclaredConstructor().newInstance();
+						if(aTranslatorFactoryObj instanceof TranslatorFactory)
+						{
+							aDjlModelConfig.setTranslator_factory((TranslatorFactory)aTranslatorFactoryObj);
+						}
+					} catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+				
 				if(aDjlModelConfig.getModel_name()!=null)
 				{
 					for(String sKey: propEmbedding.stringPropertyNames())
@@ -79,13 +97,23 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 							String sArgValue = propEmbedding.getProperty(sKey);
 							aDjlModelConfig.addMLArg(sArgName, sArgValue);
 						}
+						else if(sKey.startsWith(sPrefix+".options."))
+						{
+							String sOptKey = sKey.substring((sPrefix+".options.").length());
+							String sOptValue = propEmbedding.getProperty(sKey);
+							aDjlModelConfig.addOption(sOptKey, sOptValue);
+						}
+							
 					}
 				}
 			}
 
 			//common embedding translator
-			aDjlModelConfig.setTranslator_factory(new TextEmbeddingTranslatorFactory());
-			aDjlModelConfig.setDevice_type(Device.cpu());
+			if(aDjlModelConfig.getTranslator_factory()==null)
+				aDjlModelConfig.setTranslator_factory(new TextEmbeddingTranslatorFactory());
+			
+			if(aDjlModelConfig.getDevice_type()==null)
+				aDjlModelConfig.setDevice_type(Device.cpu());
 			
 			System.out.println("aDjlModelConfig="+aDjlModelConfig);
 		}

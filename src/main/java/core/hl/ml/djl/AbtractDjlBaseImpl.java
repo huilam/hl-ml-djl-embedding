@@ -45,6 +45,12 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
 				aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_name());
 			}
+			
+			String sMlModelFileName = aDjlModelConfig.getModel_filename();
+			if(sMlModelFileName!=null && sMlModelFileName.trim().length()>0)
+			{
+				aCriteriaBuilder.optModelName(sMlModelFileName);
+			}
 			//
 			this.djl_model_config = aDjlModelConfig;
 			this.criteria_builder = aCriteriaBuilder;

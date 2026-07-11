@@ -6,6 +6,7 @@ import ai.djl.translate.TranslateException;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 import hl.ml.djl.embedding.text.impl.sbertnet.AllMiniLM;
 import hl.ml.djl.embedding.text.impl.ibm.GraniteEmbedding;
+import hl.ml.djl.embedding.text.impl.alibaba.QWenEmbedding;
 import hl.ml.djl.embedding.text.impl.google.EmbeddingGemma;
 
 public class UnitTest {
@@ -204,8 +205,9 @@ public class UnitTest {
 	
 	public static void main(String args[]) throws TranslateException
 	{
-		UnitTest.testAll(AllMiniLM.getInstance());
-		UnitTest.testAll(EmbeddingGemma.getInstance());
+		//UnitTest.testAll(AllMiniLM.getInstance());
+		//UnitTest.testAll(EmbeddingGemma.getInstance());
 		UnitTest.testAll(GraniteEmbedding.getInstance());
+		//UnitTest.testAll(QWenEmbedding.getInstance());
 	}
 }
