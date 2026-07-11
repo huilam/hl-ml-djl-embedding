@@ -1,29 +1,15 @@
 package hl.ml.djl.embedding.text.impl.GemmaEncoder;
 
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.DjlConstants;
-import hl.ml.djl.DjlModelConfig;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 
 public class EmbeddingGemma extends TextEmbeddingCommon{
 	
 	private static EmbeddingGemma instance = null;
-	
-	private final static String model_name = "embeddinggemma-300m";
     
 	protected EmbeddingGemma()
-	{			
-		DjlModelConfig config = new DjlModelConfig();
-		//
-		config.setModel_name(model_name);
-		config.setRuntime_engine(DjlConstants.RT_ENGINE_ONNX);
-		//
-		config.addMLArg("padding", "true");
-		config.addMLArg("truncation", "true");
-		config.addMLArg("pooling", "mean"); 
-		config.addMLArg("includeTokenTypes", "false"); // Gemma is decoder-only
-		//
-		super(EmbeddingGemma.class, config);
+	{
+		super(EmbeddingGemma.class, null);
 	}
 	
 	public static EmbeddingGemma getInstance()

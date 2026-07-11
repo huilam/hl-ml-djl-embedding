@@ -1,48 +1,99 @@
 package hl.ml.djl.embedding.text.common;
 
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Properties;
 import java.util.Queue;
 
 import ai.djl.Device;
 import ai.djl.huggingface.translator.TextEmbeddingTranslatorFactory;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.translate.TranslateException;
+import hl.common.PropUtil;
 import hl.ml.djl.AbtractDjlBaseImpl;
 import hl.ml.djl.DjlModelConfig;
 
 public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	
-	protected int embedding_output_size 			= 0;
+	protected static String embedding_prop_filename 	= "hl-ml-djl.properties";
+	protected int embedding_output_size 				= 0;
 	
 	@SuppressWarnings("rawtypes")
-	protected TextEmbeddingCommon(Class aImplClass, DjlModelConfig aDjlModelConfig)
-	{	
-		//common embedding translator
-		aDjlModelConfig.setTranslator_factory(new TextEmbeddingTranslatorFactory());
-		aDjlModelConfig.setDevice_type(Device.cpu());
+	protected TextEmbeddingCommon(Class aImplClass, String aEmbeddingPrefx)
+	{
+		DjlModelConfig aDjlModelConfig = initTextEmbeddingConfig(aImplClass, aEmbeddingPrefx);
 		
-		super(
-			aImplClass, 
-			aDjlModelConfig, 
-			Criteria.builder().setTypes(String.class, float[].class));
-		
+		super(aImplClass, 
+				aDjlModelConfig, 
+				Criteria.builder().setTypes(String.class, float[].class));
+			
 		super.loadModel();
 		
-		if(this.model_init_ok && this.predictor!=null)
-		{
-			try {
-				float[] test = this.predictor.predict("test");
-				this.embedding_output_size = test.length;
-			} catch (TranslateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
+	
+	protected static DjlModelConfig initTextEmbeddingConfig(Class aImplClass, String aConfigPrefix)
+	{
+		DjlModelConfig aDjlModelConfig = null;
+		Properties propEmbedding = null;
+		
+		try {
+			propEmbedding = PropUtil.loadProperties(aImplClass, embedding_prop_filename);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("propEmbedding.size()="+propEmbedding.size());
+		
+		if(propEmbedding!=null)
+		{
+			aDjlModelConfig = new DjlModelConfig();
+			String[] sEmbeddingPrefix = new String[]{"embedding-model"};
+			
+
+			if(aConfigPrefix!=null && aConfigPrefix.trim().length()>0)
+			{
+				sEmbeddingPrefix = new String[]{
+						"embedding-model", 
+						"embedding-model."+aConfigPrefix };
+			}
+			
+			for(String sPrefix: sEmbeddingPrefix)
+			{
+				aDjlModelConfig.setModel_name(propEmbedding.getProperty(sPrefix+".name", aDjlModelConfig.getModel_name()));
+				aDjlModelConfig.setModel_folder(propEmbedding.getProperty(sPrefix+".folder", aDjlModelConfig.getModel_folder()));
+				aDjlModelConfig.setModel_url(propEmbedding.getProperty(sPrefix+".url", aDjlModelConfig.getModel_url()));
+				aDjlModelConfig.setModel_license(propEmbedding.getProperty(sPrefix+".license", aDjlModelConfig.getModel_license()));
+				aDjlModelConfig.setRuntime_engine(propEmbedding.getProperty(sPrefix+".runtime_engine", aDjlModelConfig.getRuntime_engine()));
+				if(aDjlModelConfig.getModel_name()!=null)
+				{
+					for(String sKey: propEmbedding.stringPropertyNames())
+					{
+						if(sKey.startsWith(sPrefix+".optMLArg."))
+						{
+							String sArgName = sKey.substring((sPrefix+".optMLArg.").length());
+							String sArgValue = propEmbedding.getProperty(sKey);
+							aDjlModelConfig.addMLArg(sArgName, sArgValue);
+						}
+					}
+				}
+			}
+
+			//common embedding translator
+			aDjlModelConfig.setTranslator_factory(new TextEmbeddingTranslatorFactory());
+			aDjlModelConfig.setDevice_type(Device.cpu());
+			
+			System.out.println("aDjlModelConfig="+aDjlModelConfig);
+		}
+		return aDjlModelConfig;
+		
+	}
+	
+	
 	
     public int getInputContentLength() {
 		return Integer.parseInt((String)

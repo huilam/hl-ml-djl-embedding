@@ -12,7 +12,9 @@ public class DjlModelConfig {
 	public static final String RT_ENGINE_PYTORCH 	= "PyTorch";
 	
 	private String model_name 				= null;
-	private String model_uri 				= null;
+	private String model_url 				= null;
+	private String model_folder 			= null;
+	private String model_license 			= null;
 	private String runtime_engine 			= DjlConstants.RT_ENGINE_ONNX;
 	//
 	private Device device_type				= null;
@@ -34,22 +36,63 @@ public class DjlModelConfig {
 	public void setTranslator_factory(TranslatorFactory translator_factory) {
 		this.translator_factory = translator_factory;
 	}
-	public String getModel_uri() {
-		return model_uri;
+	public String getModel_url() {
+		return model_url;
 	}
-	public void setModel_uri(String model_uri) {
-		this.model_uri = model_uri;
+	public void setModel_url(String model_url) {
+		this.model_url = model_url;
+	}
+	
+	public String getModel_folder() {
+		return model_folder;
+	}
+	public void setModel_folder(String model_folder) {
+		this.model_folder = model_folder;
+	}
+	
+	public String getModel_license() {
+		return model_license;
+	}
+	public void setModel_license(String model_license) {
+		this.model_license = model_license;
 	}
 	
 	public String getRuntime_engine() {
 		return runtime_engine;
 	}
 	public void setRuntime_engine(String runtime_engine) {
-		this.runtime_engine = runtime_engine;
+		
+		if(DjlConstants.RT_ENGINE_ONNX.equalsIgnoreCase(runtime_engine))
+		{
+			this.runtime_engine = DjlConstants.RT_ENGINE_ONNX;
+		}
+		else if(DjlConstants.RT_ENGINE_PYTORCH.equalsIgnoreCase(runtime_engine))
+		{
+			this.runtime_engine = DjlConstants.RT_ENGINE_PYTORCH;
+		}
+		else
+		{
+			this.runtime_engine = runtime_engine;
+		}
 	}
 	
 	public Device getDevice_type() {
 		return device_type;
+	}
+	
+	public void setDevice_type(String aDevice_type) {
+		
+		switch(aDevice_type.toLowerCase())
+		{
+			case "cpu":
+				this.device_type = Device.cpu();
+				break;
+			case "gpu":
+				this.device_type = Device.gpu();
+				break;
+			default:
+				break;
+		}
 	}
 	
 	public void setDevice_type(Device device_type) {
@@ -91,4 +134,19 @@ public class DjlModelConfig {
 		return mapOptions;
 	}
 	
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("model_name="+model_name);
+		sb.append("\n").append(",model_url="+model_url);
+		sb.append("\n").append(",model_license="+model_license);
+		sb.append("\n").append(",model_folder="+model_folder);
+		sb.append("\n").append(",runtime_engine="+runtime_engine);
+		sb.append("\n").append(",device_type="+device_type);
+		sb.append("\n").append(",translator_factory="+translator_factory);
+		sb.append("\n").append(",mapMLArgs="+mapMLArgs);
+		sb.append("\n").append(",mapOptions="+mapOptions);
+		
+		return sb.toString();
+	}
 }

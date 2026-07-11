@@ -1,5 +1,6 @@
 package hl.ml.djl;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -25,15 +26,29 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 			DjlModelConfig aDjlModelConfig,
 			Criteria.Builder<I, O> aCriteriaBuilder)
 	{
-		if(aDjlModelConfig.getModel_uri()==null)
+		if(aImplClass!=null && aDjlModelConfig!=null)
 		{
-			URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-			String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
-			aDjlModelConfig.setModel_uri( sModelFolder + aDjlModelConfig.getModel_name());
+			if(aDjlModelConfig.getModel_folder()!=null)
+			{
+				File folder = new File(aDjlModelConfig.getModel_folder());
+				if(!folder.isDirectory())
+				{
+					URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
+					String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
+					aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_folder());
+				}
+			}
+			
+			if(aDjlModelConfig.getModel_folder()==null)
+			{
+				URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
+				String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
+				aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_name());
+			}
+			//
+			this.djl_model_config = aDjlModelConfig;
+			this.criteria_builder = aCriteriaBuilder;
 		}
-		//
-		this.djl_model_config = aDjlModelConfig;
-		this.criteria_builder = aCriteriaBuilder;
 	}
 	
 	public void loadModel() {
@@ -41,37 +56,39 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 		DjlModelConfig djlModelConfig 	= this.djl_model_config;
 		Criteria.Builder<I, O> builder 	= this.criteria_builder;
 		
-		
-		String sModelPath = djlModelConfig.getModel_uri();
-		int iPos = sModelPath.indexOf(":");
-		if(iPos>-1)
+		if(djlModelConfig!=null && builder!=null)
 		{
-			sModelPath = sModelPath.substring(iPos+1);
-		}
-		
-		builder.optModelUrls(sModelPath);
-		builder.optEngine(djlModelConfig.getRuntime_engine());
-		
-		if(djlModelConfig.getDevice_type()!=null)
-			builder.optDevice(djlModelConfig.getDevice_type());
-	        	
-		if(djlModelConfig.getMLArgs()!=null && djlModelConfig.getMLArgs().size()>0)
-	        builder.optArguments(djlModelConfig.getMLArgs());
-		
-		builder.optOptions(djlModelConfig.getOptions());
-		
-		if(djlModelConfig.getTranslator_factory()!=null)
-			builder.optTranslatorFactory(djlModelConfig.getTranslator_factory());
-
-		this.criteria = builder.build();
-		
-		try {
-			this.model = this.criteria.loadModel();
-			this.predictor = this.model.newPredictor();
-			this.model_init_ok = true;
-		} catch (ModelNotFoundException | MalformedModelException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String sModelPath = djlModelConfig.getModel_folder();
+			int iPos = sModelPath.indexOf(":");
+			if(iPos>-1)
+			{
+				sModelPath = sModelPath.substring(iPos+1);
+			}
+			
+			builder.optModelUrls(sModelPath);
+			builder.optEngine(djlModelConfig.getRuntime_engine());
+			
+			if(djlModelConfig.getDevice_type()!=null)
+				builder.optDevice(djlModelConfig.getDevice_type());
+		        	
+			if(djlModelConfig.getMLArgs()!=null && djlModelConfig.getMLArgs().size()>0)
+		        builder.optArguments(djlModelConfig.getMLArgs());
+			
+			builder.optOptions(djlModelConfig.getOptions());
+			
+			if(djlModelConfig.getTranslator_factory()!=null)
+				builder.optTranslatorFactory(djlModelConfig.getTranslator_factory());
+	
+			this.criteria = builder.build();
+			
+			try {
+				this.model = this.criteria.loadModel();
+				this.predictor = this.model.newPredictor();
+				this.model_init_ok = true;
+			} catch (ModelNotFoundException | MalformedModelException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}
