@@ -11,8 +11,7 @@
 	    <format property="buildno" pattern="yyyyMMdd-HHmm-ss"/>
 	</tstamp>
 	
-	<target name="compile" depends="download_mlmodel">
-		<echo>Clearning ${basedir} ...</echo>
+	<target name="compile" depends="download_mlmodel,clean">
 		<mkdir dir="${build}/jar"/>
 		<javac srcdir="${core-src}" destdir="${build}/jar" debug="true" source="${jdk.ver}" target="${jdk.ver}" 
 			includeantruntime="false">
@@ -74,8 +73,8 @@
     </target>
 	
 	<target name="clean">
+		<echo>Clearning ${build} ...</echo>
 		<delete dir="${build}"/>
-		<delete dir="${releases}"/>
 	</target>
 	
 	<path id="compile.classpath">
