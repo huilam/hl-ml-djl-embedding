@@ -1,6 +1,5 @@
 package hl.ml.djl.embedding.text.impl.ModernBERT;
 
-import ai.djl.translate.TranslateException;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 
 public class GraniteEmbedding extends TextEmbeddingCommon{
@@ -23,8 +22,4 @@ public class GraniteEmbedding extends TextEmbeddingCommon{
 		return instance;
 	}
 	
-	public static void main(String[] args) throws TranslateException {
-		
-		hl.ml.djl.embedding.text.test.UnitTest.testAll( GraniteEmbedding.getInstance() );
-    }
 }

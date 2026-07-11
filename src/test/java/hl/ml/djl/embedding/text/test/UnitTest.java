@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
+import hl.ml.djl.embedding.text.impl.GemmaEncoder.EmbeddingGemma;
+import hl.ml.djl.embedding.text.impl.MiniBERT.AllMiniLM;
+import hl.ml.djl.embedding.text.impl.ModernBERT.GraniteEmbedding;
 
 public class UnitTest {
 	
@@ -197,5 +200,12 @@ public class UnitTest {
 		//
 		testSentencePair_Similar(embedding);
 		testSentencePair_Unrelated(embedding);
+	}
+	
+	public static void main(String args[]) throws TranslateException
+	{
+		UnitTest.testAll(AllMiniLM.getInstance());
+		UnitTest.testAll(EmbeddingGemma.getInstance());
+		UnitTest.testAll(GraniteEmbedding.getInstance());
 	}
 }
