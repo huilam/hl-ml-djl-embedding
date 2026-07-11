@@ -3,10 +3,10 @@ package hl.ml.djl.embedding.text.impl.GemmaEncoder;
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.DjlConstants;
 import hl.ml.djl.DjlModelConfig;
-import hl.ml.djl.embedding.text.common.EmbeddingCommon;
+import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 import hl.ml.djl.embedding.text.common.test.UnitTest;
 
-public class EmbeddingGemma extends EmbeddingCommon{
+public class EmbeddingGemma extends TextEmbeddingCommon{
 	
 	private static EmbeddingGemma instance = null;
 	

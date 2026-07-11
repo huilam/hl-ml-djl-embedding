@@ -3,11 +3,11 @@ package hl.ml.djl.embedding.text.common.test;
 import java.util.HashMap;
 import java.util.Map;
 import ai.djl.translate.TranslateException;
-import hl.ml.djl.embedding.text.common.EmbeddingCommon;
+import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 
 public class UnitTest {
 	
-	private static void printModelInfo(EmbeddingCommon embedding)
+	private static void printModelInfo(TextEmbeddingCommon embedding)
 	{
         
         System.out.println("Model Name: " + embedding.getModel_name());
@@ -15,7 +15,7 @@ public class UnitTest {
         System.out.println("Output Size: " + embedding.getOutputEmbeddingSize());
 	}
 	
-	public static void testSimilarSentence(EmbeddingCommon embedding) throws TranslateException {
+	public static void testSimilarSentence(TextEmbeddingCommon embedding) throws TranslateException {
 		
 		long lAppStart = System.currentTimeMillis();
 		
@@ -36,7 +36,7 @@ public class UnitTest {
         System.out.println();
     }
 	
-	public static void testSentencePair_Similar(EmbeddingCommon embedding) throws TranslateException {
+	public static void testSentencePair_Similar(TextEmbeddingCommon embedding) throws TranslateException {
 		
 		long lAppStart = System.currentTimeMillis();
 		Map<String,String> mapSentences = new HashMap<>();
@@ -62,7 +62,7 @@ public class UnitTest {
         System.out.println();
  	}
 	
-	public static void testSentencePair_Unrelated(EmbeddingCommon embedding) throws TranslateException {
+	public static void testSentencePair_Unrelated(TextEmbeddingCommon embedding) throws TranslateException {
 		
 		long lAppStart = System.currentTimeMillis();
 		Map<String,String> mapSentences = new HashMap<>();
@@ -88,7 +88,7 @@ public class UnitTest {
         System.out.println();
  	}
 	
-	public static void testWordPairs_Similar(EmbeddingCommon embedding) throws TranslateException {
+	public static void testWordPairs_Similar(TextEmbeddingCommon embedding) throws TranslateException {
 	
 		long lAppStart = System.currentTimeMillis();
 		Map<String,String> mapWords = new HashMap<>();
@@ -114,7 +114,7 @@ public class UnitTest {
         System.out.println();
 	}
 	
-	public static void testWordPairs_Unrelated(EmbeddingCommon embedding) throws TranslateException {
+	public static void testWordPairs_Unrelated(TextEmbeddingCommon embedding) throws TranslateException {
 		
 		long lAppStart = System.currentTimeMillis();
 		Map<String,String> mapWords = new HashMap<>();
@@ -141,7 +141,7 @@ public class UnitTest {
         System.out.println();
  	}
 	
-	private static void testWordPairs(EmbeddingCommon embedding, Map<String,String> mapWordPairs) throws TranslateException {
+	private static void testWordPairs(TextEmbeddingCommon embedding, Map<String,String> mapWordPairs) throws TranslateException {
 		
         long lInferenceStart = System.currentTimeMillis();
         StringBuffer sbResult = new StringBuffer();
@@ -159,7 +159,7 @@ public class UnitTest {
         System.out.println(sbResult.toString());
     }
 	
-	public static void testTopKSimilarWords(EmbeddingCommon embedding) throws TranslateException {
+	public static void testTopKSimilarWords(TextEmbeddingCommon embedding) throws TranslateException {
 		
 		long lAppStart = System.currentTimeMillis();
 		
@@ -187,7 +187,7 @@ public class UnitTest {
         System.out.println();
     }
 	
-	public static void testAll(EmbeddingCommon embedding) throws TranslateException 
+	public static void testAll(TextEmbeddingCommon embedding) throws TranslateException 
 	{
 		testSimilarSentence(embedding);
 		testTopKSimilarWords(embedding);

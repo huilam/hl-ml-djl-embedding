@@ -3,10 +3,10 @@ package hl.ml.djl.embedding.text.impl.ModernBERT;
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.DjlConstants;
 import hl.ml.djl.DjlModelConfig;
-import hl.ml.djl.embedding.text.common.EmbeddingCommon;
+import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 import hl.ml.djl.embedding.text.common.test.UnitTest;
 
-public class GraniteEmbedding extends EmbeddingCommon{
+public class GraniteEmbedding extends TextEmbeddingCommon{
 	
 	private static GraniteEmbedding instance = null;
 	private final static String[] model_names = new String[]{
