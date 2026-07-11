@@ -1,4 +1,4 @@
-package hl.ml.djl.embedding.text.common.test;
+package hl.ml.djl.embedding.text.test;
 
 import java.util.HashMap;
 import java.util.Map;

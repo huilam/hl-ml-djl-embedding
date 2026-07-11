@@ -4,7 +4,6 @@ import ai.djl.translate.TranslateException;
 import hl.ml.djl.DjlConstants;
 import hl.ml.djl.DjlModelConfig;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
-import hl.ml.djl.embedding.text.common.test.UnitTest;
 
 public class GraniteEmbedding extends TextEmbeddingCommon{
 	
@@ -39,6 +38,6 @@ public class GraniteEmbedding extends TextEmbeddingCommon{
 	
 	public static void main(String[] args) throws TranslateException {
 		
-		UnitTest.testAll( GraniteEmbedding.getInstance() );
+		hl.ml.djl.embedding.text.test.UnitTest.testAll( GraniteEmbedding.getInstance() );
     }
 }
