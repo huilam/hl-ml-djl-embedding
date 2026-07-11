@@ -1,0 +1,86 @@
+<project>
+	
+	<property name="core-src" location="src/main/java/core"/>
+	<property name="plugin-src" location="src/main/java/plugins/${ant.project.name}"/>
+	<property name="build" location="build/${ant.project.name}"/>
+	<property name="lib" location="src/main/webapp/WEB-INF/lib"/>
+	<property name="releases" location="releases"/>
+	<property name="jdk.ver" value="25"/>
+	
+	<tstamp>
+	    <format property="buildno" pattern="yyyyMMdd-HHmm-ss"/>
+	</tstamp>
+	
+	<target name="compile" depends="download_mlmodel">
+		<echo>Clearning ${basedir} ...</echo>
+		<mkdir dir="${build}/jar"/>
+		<javac srcdir="${core-src}" destdir="${build}/jar" debug="true" source="${jdk.ver}" target="${jdk.ver}" 
+			includeantruntime="false">
+			<classpath refid="compile.classpath"/>
+		</javac>
+		<javac srcdir="${plugin-src}" destdir="${build}/jar" debug="true" source="${jdk.ver}" target="${jdk.ver}" 
+			includeantruntime="false">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+		
+	<target name="jar" depends="compile, set_jar_suffix">
+
+		<copydir src="${plugin-src}" dest="${build}/jar">
+			<exclude name="**/*.java"/>
+			<exclude name="**/dev/"/>
+		</copydir>
+		
+		<jar jarfile="${build}/hl-ml-embedding-plugin-${ant.project.name}-jdk${jdk.ver}_${buildno}.jar">
+			<fileset dir="${build}/jar">
+		        <include name="**/*.*"/>
+		        <exclude name="${exclude.packages}"/>
+		        <include name="version/${ant.project.name}_${buildno}"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="check_module_name">
+		<condition property="no_jar_suffix">
+            <not>
+                <isset property="mlmodel.module"/>
+            </not>
+		</condition>
+	</target>
+	
+	<target name="set_jar_suffix" depends="check_module_name" if="${no_jar_suffix}">
+		<property name="jar_suffix" value=""/>
+	</target>
+
+	
+	<target name="download_mlmodel" depends="check_mlmodel" if="mlmodel.missing">
+    	<echo>Download ${mlmodel.filename} ...</echo>
+    	<get ignoreerrors="no" verbose="yes" 
+			src="${mlmodel.download.url}" dest="${mlmodel.filename}"/>
+	</target>
+	
+	<target name="display_os">
+	    <echo>OS=${os.name} ${os.version}</echo>
+	    <echo>Arch=${os.arch}</echo>
+	</target>
+	
+    <target name="check_mlmodel" depends="display_os">
+        <available file="${mlmodel.filename}" property="mlmodel.exists"/>
+        <condition property="mlmodel.missing">
+            <not>
+                <isset property="mlmodel.exists"/>
+            </not>
+        </condition>
+    </target>
+	
+	<target name="clean">
+		<delete dir="${build}"/>
+		<delete dir="${releases}"/>
+	</target>
+	
+	<path id="compile.classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+</project>
