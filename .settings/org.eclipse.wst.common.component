@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-        
-    <wb-module deploy-name="hl-ml-djl">
-                
-        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-                
-        <property name="context-root" value="hl-ml-djl"/>
-                
-        <property name="java-output-path" value="/hl-ml-djl/build"/>
             
-    </wb-module>
     
+    <wb-module deploy-name="hl-ml-djl">
+                        
+        
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/core"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/plugins/granite_embedding"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/plugins/allminilm"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java/plugins/embeddinggemma"/>
+                        
+        
+        <property name="context-root" value="hl-ml-djl"/>
+                        
+        
+        <property name="java-output-path" value="/hl-ml-djl/build"/>
+                    
+    
+    </wb-module>
+        
+
 </project-modules>

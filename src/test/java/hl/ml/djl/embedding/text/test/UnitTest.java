@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
-import hl.ml.djl.embedding.text.impl.GemmaEncoder.EmbeddingGemma;
-import hl.ml.djl.embedding.text.impl.MiniBERT.AllMiniLM;
-import hl.ml.djl.embedding.text.impl.ModernBERT.GraniteEmbedding;
+import hl.ml.djl.embedding.text.impl.sbertnet.AllMiniLM;
+import hl.ml.djl.embedding.text.impl.ibm.GraniteEmbedding;
+import hl.ml.djl.embedding.text.impl.google.EmbeddingGemma;
 
 public class UnitTest {
 	

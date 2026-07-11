@@ -1,4 +1,4 @@
-package hl.ml.djl.embedding.text.impl.MiniBERT;
+package hl.ml.djl.embedding.text.impl.sbertnet;
 
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 

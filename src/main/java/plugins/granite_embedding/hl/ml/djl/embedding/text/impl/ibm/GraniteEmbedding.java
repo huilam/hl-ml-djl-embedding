@@ -1,4 +1,4 @@
-package hl.ml.djl.embedding.text.impl.ModernBERT;
+package hl.ml.djl.embedding.text.impl.ibm;
 
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 

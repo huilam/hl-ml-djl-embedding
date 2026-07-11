@@ -1,4 +1,4 @@
-package hl.ml.djl.embedding.text.impl.GemmaEncoder;
+package hl.ml.djl.embedding.text.impl.google;
 
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
 

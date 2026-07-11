@@ -5,8 +5,11 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/main/java/plugins/embeddinggemma"/>
+	<classpathentry kind="src" path="src/main/java/plugins/granite_embedding"/>
+	<classpathentry kind="src" path="src/main/java/plugins/allminilm"/>
+	<classpathentry kind="src" path="src/main/java/core"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="output" path="build"/>
