@@ -1,6 +1,8 @@
 package hl.ml.djl.embedding.text.common;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -233,6 +235,31 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
     	}
     	
     	return mapEmbeddings;
+    }
+    
+    public static TextEmbeddingCommon getInstance(String aTextEmbeddingClassName)
+    {
+    	TextEmbeddingCommon textEmbeddingCommon = null;
+    	try {
+			Class<?> classTextEmbedding = Class.forName(aTextEmbeddingClassName);
+			Method getInstanceMethod = classTextEmbedding.getMethod("getInstance");
+			textEmbeddingCommon = 
+					(TextEmbeddingCommon) getInstanceMethod.invoke(null);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return textEmbeddingCommon;
     }
     
 }

@@ -1,5 +1,7 @@
 package hl.ml.djl.embedding.text.test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import ai.djl.translate.TranslateException;
@@ -203,11 +205,17 @@ public class UnitTest {
 		testSentencePair_Unrelated(embedding);
 	}
 	
+	public static void testAll(String aTextEmbeddingClassName) throws TranslateException 
+	{
+		TextEmbeddingCommon aTextEmbeddingCommon = TextEmbeddingCommon.getInstance(aTextEmbeddingClassName);
+		testAll(aTextEmbeddingCommon);
+	}
+	
 	public static void main(String args[]) throws TranslateException
 	{
 		//UnitTest.testAll(AllMiniLM.getInstance());
 		//UnitTest.testAll(EmbeddingGemma.getInstance());
-		UnitTest.testAll(GraniteEmbedding.getInstance());
+		UnitTest.testAll(GraniteEmbedding.getInstance().getClass().getName());
 		//UnitTest.testAll(QWenEmbedding.getInstance());
 	}
 }
