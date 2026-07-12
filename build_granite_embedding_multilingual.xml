@@ -6,7 +6,7 @@
 	<property name="mlmodel.path" value="${plugin-src}/hl/ml/djl/embedding/text/impl/ibm/model"/>
 	<property name="jar_suffix" value="_${mlmodel.module}"/>
 	
-	<property name="mlmodel.download.url" value="https://huggingface.co/ibm-granite/granite-embedding-97m-multilingual-r2/resolve/main/onnx/model.onnx?download=true"/>
+	<property name="mlmodel.download.url" value="https://huggingface.co/ibm-granite/${mlmodel.module}/resolve/main/onnx/model.onnx?download=true"/>
 	<property name="mlmodel.filename" value="${mlmodel.path}/${mlmodel.module}/model.onnx"/>
 
 </project>
