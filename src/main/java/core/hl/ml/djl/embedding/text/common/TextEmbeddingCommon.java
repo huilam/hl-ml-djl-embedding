@@ -26,22 +26,28 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	protected int embedding_output_size 				= 0;
 	
 	@SuppressWarnings("rawtypes")
-	protected TextEmbeddingCommon(Class aImplClass, String aEmbeddingPrefx)
+	protected TextEmbeddingCommon(Class aImplClass, String aSubCfgPrefix)
 	{
-		DjlModelConfig aDjlModelConfig = initTextEmbeddingConfig(aImplClass, aEmbeddingPrefx);
+		DjlModelConfig aDjlModelConfig = initTextEmbeddingConfig(aImplClass, aSubCfgPrefix);
 		
 		super(aImplClass, 
 				aDjlModelConfig, 
 				Criteria.builder().setTypes(String.class, float[].class));
 			
-		super.loadModel();
+		initEmbeddingModel();
 		
 	}
 	
-	protected static DjlModelConfig initTextEmbeddingConfig(Class aImplClass, String aConfigPrefix)
+	protected void initEmbeddingModel()
+	{
+		super.loadModel();
+	}
+	
+	protected static DjlModelConfig initTextEmbeddingConfig(Class<?> aImplClass, String aSubCfgPrefix)
 	{
 		DjlModelConfig aDjlModelConfig = null;
 		Properties propEmbedding = null;
+		String sConfigKey = "embedding-model";
 		
 		try {
 			propEmbedding = PropUtil.loadProperties(aImplClass, embedding_prop_filename);
@@ -55,14 +61,14 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 		if(propEmbedding!=null)
 		{
 			aDjlModelConfig = new DjlModelConfig();
-			String[] sEmbeddingPrefix = new String[]{"embedding-model"};
+			String[] sEmbeddingPrefix = new String[]{sConfigKey};
 			
 
-			if(aConfigPrefix!=null && aConfigPrefix.trim().length()>0)
+			if(aSubCfgPrefix!=null && aSubCfgPrefix.trim().length()>0)
 			{
 				sEmbeddingPrefix = new String[]{
-						"embedding-model", 
-						"embedding-model."+aConfigPrefix };
+						sConfigKey, 
+						sConfigKey+"."+aSubCfgPrefix };
 			}
 			
 			for(String sPrefix: sEmbeddingPrefix)
