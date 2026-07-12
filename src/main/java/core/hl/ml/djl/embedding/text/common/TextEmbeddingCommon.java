@@ -23,6 +23,7 @@ import hl.ml.djl.DjlModelConfig;
 public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	
 	protected static String embedding_prop_filename 	= "hl-ml-djl.properties";
+	protected static String embedding_prop_key 			= "embedding-model";
 	protected int embedding_output_size 				= 0;
 	
 	@SuppressWarnings("rawtypes")
@@ -47,7 +48,6 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	{
 		DjlModelConfig aDjlModelConfig = null;
 		Properties propEmbedding = null;
-		String sConfigKey = "embedding-model";
 		
 		try {
 			propEmbedding = PropUtil.loadProperties(aImplClass, embedding_prop_filename);
@@ -61,14 +61,14 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 		if(propEmbedding!=null)
 		{
 			aDjlModelConfig = new DjlModelConfig();
-			String[] sEmbeddingPrefix = new String[]{sConfigKey};
+			String[] sEmbeddingPrefix = new String[]{embedding_prop_key};
 			
 
 			if(aSubCfgPrefix!=null && aSubCfgPrefix.trim().length()>0)
 			{
 				sEmbeddingPrefix = new String[]{
-						sConfigKey, 
-						sConfigKey+"."+aSubCfgPrefix };
+						embedding_prop_key, 
+						embedding_prop_key+"."+aSubCfgPrefix };
 			}
 			
 			for(String sPrefix: sEmbeddingPrefix)
