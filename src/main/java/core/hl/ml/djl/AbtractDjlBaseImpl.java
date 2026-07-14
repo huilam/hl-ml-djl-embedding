@@ -3,7 +3,6 @@ package hl.ml.djl;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
 import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.Criteria;
@@ -28,23 +27,27 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 	{
 		if(aImplClass!=null && aDjlModelConfig!=null)
 		{
-			if(aDjlModelConfig.getModel_folder()!=null)
+			File folder = new File(aDjlModelConfig.getModel_folder());
+			if(!folder.exists())
 			{
-				File folder = new File(aDjlModelConfig.getModel_folder());
-				if(!folder.isDirectory())
+				URL urlLoader = aImplClass.getProtectionDomain().getCodeSource().getLocation();
+				String sPackagePath =  "/"+aImplClass.getPackageName().replace(".","/");
+				//is jar
+				if(urlLoader.getPath().toLowerCase().endsWith(".jar"))
 				{
-					URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-					String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
-					aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_folder());
+					sPackagePath = "jar://"+sPackagePath;
 				}
+				else
+				{
+					sPackagePath = urlLoader+sPackagePath;
+				}
+				
+				String sModelFolder = sPackagePath+"/model/";
+				aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_folder());
+			
 			}
 			
-			if(aDjlModelConfig.getModel_folder()==null)
-			{
-				URL url = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-				String sModelFolder = url.toString()+aImplClass.getPackageName().replace(".","/")+"/model/";
-				aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_name());
-			}
+			System.out.println("getModel_folder()="+aDjlModelConfig.getModel_folder());
 			
 			String sMlModelFileName = aDjlModelConfig.getModel_filename();
 			if(sMlModelFileName!=null && sMlModelFileName.trim().length()>0)
@@ -65,12 +68,13 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 		if(djlModelConfig!=null && builder!=null)
 		{
 			String sModelPath = djlModelConfig.getModel_folder();
+			/**
 			int iPos = sModelPath.indexOf(":");
 			if(iPos>-1)
 			{
 				sModelPath = sModelPath.substring(iPos+1);
 			}
-			
+			**/
 			builder.optModelUrls(sModelPath);
 			builder.optEngine(djlModelConfig.getRuntime_engine());
 			
@@ -93,6 +97,7 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				this.model_init_ok = true;
 			} catch (ModelNotFoundException | MalformedModelException | IOException e) {
 				// TODO Auto-generated catch block
+				System.err.println(sModelPath);
 				e.printStackTrace();
 			}
 		}
