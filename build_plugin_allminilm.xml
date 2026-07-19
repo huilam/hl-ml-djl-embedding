@@ -3,10 +3,10 @@
 	
 	<property name="mlmodel.module" value="all-MiniLM-L12-v2"/>
 	
-	<property name="mlmodel.path" value="${plugin-src}/hl/ml/djl/embedding/text/impl/sbertnet/model"/>
+	<property name="mlmodel.package.path" value="hl/ml/djl/embedding/text/impl/sbertnet/model"/>
 	<property name="jar_suffix" value="_${mlmodel.module}"/>
 	
 	<property name="mlmodel.download.url" value="https://huggingface.co/onnx-models/all-MiniLM-L12-v2-onnx/resolve/main/model.onnx?download=true"/>
-	<property name="mlmodel.filename" value="${mlmodel.path}/${mlmodel.module}/model.onnx"/>
+	<property name="mlmodel.filename" value="${plugin-src}/${mlmodel.package.path}/${mlmodel.module}/model.onnx"/>
 
 </project>

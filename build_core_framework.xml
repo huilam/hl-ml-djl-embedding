@@ -1,4 +1,4 @@
-<project name="core_framework" default="jar_core" basedir=".">
+<project name="core-framework" default="jar_core" basedir=".">
 	<import file="./base_antbuild.xml"/>
 	
 	<property name="mlmodel.download.url" value=""/>

@@ -3,10 +3,10 @@
 	
 	<property name="mlmodel.module" value="qwen3-embedding:0.6b"/>
 	
-	<property name="mlmodel.path" value="${plugin-src}/hl/ml/djl/embedding/text/impl/alibaba/model"/>
+	<property name="mlmodel.package.path" value="hl/ml/djl/embedding/text/impl/alibaba/model"/>
 	<property name="jar_suffix" value="_${mlmodel.module}"/>
 	
 	<property name="mlmodel.download.url" value="https://huggingface.co/onnx-community/Qwen3-Embedding-0.6B-ONNX/resolve/main/onnx/model_uint8.onnx"/>
-	<property name="mlmodel.filename" value="${mlmodel.path}/${mlmodel.module}/model_uint8.onnx"/>
+	<property name="mlmodel.filename" value="${plugin-src}/${mlmodel.package.path}/${mlmodel.module}/model_uint8.onnx"/>
 
 </project>

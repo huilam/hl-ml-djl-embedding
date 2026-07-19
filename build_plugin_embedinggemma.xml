@@ -3,10 +3,10 @@
 	
 	<property name="mlmodel.module" value="embeddinggemma-300m"/>
 	
-	<property name="mlmodel.path" value="${plugin-src}/hl/ml/djl/embedding/text/impl/google/model"/>
+	<property name="mlmodel.package.path" value="hl/ml/djl/embedding/text/impl/google/model"/>
 	<property name="jar_suffix" value="_${mlmodel.module}"/>
 	
 	<property name="mlmodel.download.url" value="https://huggingface.co/onnx-community/embeddinggemma-300m-ONNX/resolve/main/onnx/model.onnx_data?download=true"/>
-	<property name="mlmodel.filename" value="${mlmodel.path}/${mlmodel.module}/model.onnx_data"/>
+	<property name="mlmodel.filename" value="${plugin-src}/${mlmodel.package.path}/${mlmodel.module}/model.onnx_data"/>
 
 </project>

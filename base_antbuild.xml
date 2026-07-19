@@ -22,6 +22,7 @@
 	<target name="compile" depends="compile_core">
 		<javac srcdir="${plugin-src}" destdir="${build}/jar" debug="true" source="${jdk.ver}" target="${jdk.ver}" 
 			includeantruntime="false">
+			<exclude name="${mlmodel.package.path}/**/*.*"/>
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
@@ -34,7 +35,8 @@
 		
 		<jar jarfile="${build}/hl-ml-embedding-${ant.project.name}-jdk${jdk.ver}_${buildno}.jar">
 			<fileset dir="${build}/jar">
-		        <include name="**/core/*.*"/>
+				<include name="**/*.*"/>
+		        <exclude name="**/plugins/*.*"/>
 		        <exclude name="${exclude.packages}"/>
 		        <include name="version/${ant.project.name}_${buildno}"/>
 			</fileset>
@@ -45,11 +47,18 @@
 		<copydir src="${plugin-src}" dest="${build}/jar">
 			<exclude name="**/*.java"/>
 			<exclude name="**/dev/"/>
+			<exclude name="**/${mlmodel.package.path}/**/*.*"/>
 		</copydir>
+		
+		<jar jarfile="${build}/jar/${mlmodel.package.path}/${mlmodel.module}.zip">
+			<fileset dir="${plugin-src}/${mlmodel.package.path}/${mlmodel.module}">
+		        <include name="**/*.*"/>
+			</fileset>
+		</jar>
 		
 		<jar jarfile="${build}/hl-ml-embedding-plugin-${ant.project.name}-jdk${jdk.ver}_${buildno}.jar">
 			<fileset dir="${build}/jar">
-		        <include name="**/plugins/*.*"/>
+		        <include name="**/impl/**/*.*"/>
 		        <exclude name="${exclude.packages}"/>
 		        <include name="version/${ant.project.name}_${buildno}"/>
 			</fileset>
