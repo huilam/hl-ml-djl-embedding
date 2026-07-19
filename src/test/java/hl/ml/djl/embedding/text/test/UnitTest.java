@@ -1,15 +1,10 @@
 package hl.ml.djl.embedding.text.test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import ai.djl.translate.TranslateException;
 import hl.ml.djl.embedding.text.common.TextEmbeddingCommon;
-import hl.ml.djl.embedding.text.impl.sbertnet.AllMiniLM;
 import hl.ml.djl.embedding.text.impl.ibm.GraniteEmbedding;
-import hl.ml.djl.embedding.text.impl.alibaba.QWenEmbedding;
-import hl.ml.djl.embedding.text.impl.google.EmbeddingGemma;
 
 public class UnitTest {
 	

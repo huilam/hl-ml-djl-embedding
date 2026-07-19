@@ -1,4 +1,4 @@
-<project name="embeddinggemma" default="jar" basedir=".">
+<project name="embeddinggemma" default="jar_plugins" basedir=".">
 	<import file="./base_antbuild.xml"/>
 	
 	<property name="mlmodel.module" value="embeddinggemma-300m"/>

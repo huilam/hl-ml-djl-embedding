@@ -1,4 +1,4 @@
-<project name="allminilm" default="jar" basedir=".">
+<project name="allminilm" default="jar_plugins" basedir=".">
 	<import file="./base_antbuild.xml"/>
 	
 	<property name="mlmodel.module" value="all-MiniLM-L12-v2"/>

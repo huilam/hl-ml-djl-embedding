@@ -1,4 +1,4 @@
-<project name="qwen_embedding" default="jar" basedir=".">
+<project name="qwen_embedding" default="jar_plugins" basedir=".">
 	<import file="./base_antbuild.xml"/>
 	
 	<property name="mlmodel.module" value="qwen3-embedding:0.6b"/>

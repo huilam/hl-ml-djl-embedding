@@ -1,4 +1,4 @@
-<project name="granite_embedding" default="jar" basedir=".">
+<project name="granite_embedding" default="jar_plugins" basedir=".">
 	<import file="./base_antbuild.xml"/>
 	
 	<property name="mlmodel.module" value="granite-embedding-97m-multilingual-r2"/>

@@ -11,20 +11,37 @@
 	    <format property="buildno" pattern="yyyyMMdd-HHmm-ss"/>
 	</tstamp>
 	
-	<target name="compile" depends="download_mlmodel,clean">
+	<target name="compile_core" depends="download_mlmodel,clean">
 		<mkdir dir="${build}/jar"/>
 		<javac srcdir="${core-src}" destdir="${build}/jar" debug="true" source="${jdk.ver}" target="${jdk.ver}" 
 			includeantruntime="false">
 			<classpath refid="compile.classpath"/>
 		</javac>
+	</target>
+	
+	<target name="compile" depends="compile_core">
 		<javac srcdir="${plugin-src}" destdir="${build}/jar" debug="true" source="${jdk.ver}" target="${jdk.ver}" 
 			includeantruntime="false">
 			<classpath refid="compile.classpath"/>
 		</javac>
 	</target>
 		
-	<target name="jar" depends="compile, set_jar_suffix">
-
+	<target name="jar_core" depends="compile_core">
+		<copydir src="${core-src}" dest="${build}/jar">
+			<exclude name="**/*.java"/>
+			<exclude name="**/dev/"/>
+		</copydir>
+		
+		<jar jarfile="${build}/hl-ml-embedding-${ant.project.name}-jdk${jdk.ver}_${buildno}.jar">
+			<fileset dir="${build}/jar">
+		        <include name="**/core/*.*"/>
+		        <exclude name="${exclude.packages}"/>
+		        <include name="version/${ant.project.name}_${buildno}"/>
+			</fileset>
+		</jar>
+	</target>
+	
+	<target name="jar_plugins" depends="compile, set_jar_suffix">
 		<copydir src="${plugin-src}" dest="${build}/jar">
 			<exclude name="**/*.java"/>
 			<exclude name="**/dev/"/>
@@ -32,7 +49,7 @@
 		
 		<jar jarfile="${build}/hl-ml-embedding-plugin-${ant.project.name}-jdk${jdk.ver}_${buildno}.jar">
 			<fileset dir="${build}/jar">
-		        <include name="**/*.*"/>
+		        <include name="**/plugins/*.*"/>
 		        <exclude name="${exclude.packages}"/>
 		        <include name="version/${ant.project.name}_${buildno}"/>
 			</fileset>
