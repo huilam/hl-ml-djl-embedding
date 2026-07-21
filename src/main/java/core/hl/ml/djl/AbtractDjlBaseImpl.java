@@ -3,12 +3,10 @@ package hl.ml.djl;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
@@ -44,46 +42,13 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				//is jar
 				if(jarUrl.getPath().toLowerCase().endsWith(".jar"))
 				{
-					sModelFolder = sImplPackagePath + aDjlModelConfig.getModel_folder();
-					URL jarZipUrl = aImplClass.getResource(sModelFolder+".zip");
-					if(jarZipUrl!=null)
-					{
-						// 1. Define a directory inside DJL's default cache path (~/.djl.ai/cache)
-					    String userHome = System.getProperty("user.home");
-					    Path djlCacheDir = Paths.get(userHome, ".djl.ai", "cache", "jar-models", aDjlModelConfig.getModel_folder());
-					    
-					    // 2. Only unzip if the directory doesn't already exist
-					    if (!Files.exists(djlCacheDir)) {
-					        InputStream is = null;
-					        try {
-					        	Files.createDirectories(djlCacheDir);
-				        		is = getClass().getResourceAsStream(sModelFolder+".zip");
-					            if (is == null) {
-					                throw new RuntimeException("Could not find model zip in classpath: " + sModelFolder+".zip");
-					            }
-					            // 3. Use DJL's built-in ZipUtils to unpack the stream directly to the folder
-					            ZipUtils.unzip(is, djlCacheDir);
-					        } 
-					        catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-					        finally
-					        {
-					        	if(is!=null)
-									try {
-										is.close();
-									} catch (IOException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-					        }
-					    }
-					    
-					    // 4. Pass the unzipped cache directory URI to DJL
-					    sModelFolder = djlCacheDir.toUri().toString();
-					}
+					String sZipResName = sImplPackagePath + aDjlModelConfig.getModel_folder() +".zip";
 					
+					String sCacheModelPath = unpackToCache(aImplClass, sZipResName, aDjlModelConfig.getModel_folder());
+					if(sCacheModelPath!=null)
+					{
+						sModelFolder = sCacheModelPath;
+					}
 				}
 				aDjlModelConfig.setModel_folder( sModelFolder);
 			}
@@ -99,6 +64,101 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 			this.djl_model_config = aDjlModelConfig;
 			this.criteria_builder = aCriteriaBuilder;
 		}
+	}
+	private boolean clearFromCache(String aModelFolder) {
+		boolean isCleared = false;
+		// Basic safety check
+		if (aModelFolder != null && aModelFolder.contains("/.djl.ai/cache/")) {
+			try {
+				URL urlModel = new URL(aModelFolder);
+				File folder = new File(urlModel.getFile());
+				
+				if (folder.exists()) {
+					deleteDirRecursively(folder);
+					System.out.println("deleted.");
+					// Wait a moment for OS file locks to release if necessary
+					Thread.sleep(50); 
+					isCleared = !folder.exists();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return isCleared;
+	}
+
+	// Recursive helper method
+	private void deleteDirRecursively(File fileToDrop) {
+		// If it's a directory, list its contents and call this method on each one
+		if (fileToDrop.isDirectory()) {
+			File[] children = fileToDrop.listFiles();
+			if (children != null) {
+				for (File child : children) {
+					deleteDirRecursively(child); // Deletes the contents inside the subfolder
+				}
+			}
+		}
+		
+		// At this point, if it was a directory, it is now empty. 
+		// If it was a file, we can just delete it.
+		if (fileToDrop.delete()) {
+			System.out.println("  - Deleted : " + fileToDrop.getAbsolutePath());
+		} else {
+			System.out.println("  - Failed to delete : " + fileToDrop.getAbsolutePath());
+		}
+	}
+	
+	private String unpackToCache(Class aImplClass, String aZipResourceName, String aUnpackFolderName)
+	{
+		URL jarZipUrl = aImplClass.getResource(aZipResourceName);
+		if(jarZipUrl!=null)
+		{
+			// 1. Define a directory inside DJL's default cache path (~/.djl.ai/cache)
+		    String userHome = System.getProperty("user.home");
+		    Path djlCacheDir = Paths.get(userHome, ".djl.ai", "cache", "jar-models", aUnpackFolderName);
+		    
+		    // 2. Only unzip if the directory doesn't already exist
+		    if (!Files.exists(djlCacheDir)) {
+		        try {
+		        	Files.createDirectories(djlCacheDir);
+		        } 
+		        catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    
+		    File folder = djlCacheDir.toFile();
+		    if(folder!=null && folder.listFiles().length==0)
+		    {
+		        InputStream is = null;
+		        try {
+	        		is = getClass().getResourceAsStream(aZipResourceName);
+		            if (is == null) {
+		                throw new RuntimeException("Could not find model zip in classpath: " + aZipResourceName);
+		            }
+		            // 3. Use DJL's built-in ZipUtils to unpack the stream directly to the folder
+		            ZipUtils.unzip(is, djlCacheDir);
+		        } 
+		        catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        finally
+		        {
+		        	if(is!=null)
+						try {
+							is.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		        }
+		    }
+		    // 4. Pass the unzipped cache directory URI to DJL
+		    return djlCacheDir.toUri().toString();
+		}
+		return null;
 	}
 	
 	public void loadModel() {
@@ -138,36 +198,10 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				this.model_init_ok = true;
 			} catch (ModelNotFoundException | MalformedModelException | IOException e) {
 				// TODO Auto-generated catch block
-				this.model_init_ok = false;
-				System.err.println(sModelPath);
-				
-				if(sModelPath.contains("/.djl.ai/cache/"))
-				{
-					try {
-						URL urlModel = new URL(sModelPath);
-						File folder = new File(urlModel.getFile());
-						
-						if(folder.isDirectory())
-						{
-							for(File f: folder.listFiles())
-							{
-								if(f.delete())
-									System.out.println("  - Deleted : " + f.getAbsolutePath());
-							}
-							Thread.sleep(500);
-						}
-						System.out.println(" Deleting Folder - "+folder.getAbsolutePath());
-						if(folder.delete())
-							System.out.println("deleted.");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
 				e.printStackTrace();
+				this.model_init_ok = false;
+				clearFromCache(sModelPath);
+				
 			}
 		}
 		
