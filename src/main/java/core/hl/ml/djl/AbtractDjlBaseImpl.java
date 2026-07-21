@@ -2,12 +2,20 @@ package hl.ml.djl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import ai.djl.MalformedModelException;
 import ai.djl.inference.Predictor;
 import ai.djl.repository.zoo.Criteria;
 import ai.djl.repository.zoo.ModelNotFoundException;
 import ai.djl.repository.zoo.ZooModel;
+import ai.djl.util.ZipUtils;
 
 public abstract class AbtractDjlBaseImpl<I, O> {
 	
@@ -30,21 +38,54 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 			File folder = new File(aDjlModelConfig.getModel_folder());
 			if(!folder.exists())
 			{
-				URL urlLoader = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-				String sPackagePath =  "/"+aImplClass.getPackageName().replace(".","/");
+				URL jarUrl = aImplClass.getProtectionDomain().getCodeSource().getLocation();
+				String sImplPackagePath =  "/"+aImplClass.getPackageName().replace(".","/")+"/model/";
+				String sModelFolder = jarUrl + sImplPackagePath + aDjlModelConfig.getModel_folder();
 				//is jar
-				if(urlLoader.getPath().toLowerCase().endsWith(".jar"))
+				if(jarUrl.getPath().toLowerCase().endsWith(".jar"))
 				{
-					sPackagePath = "jar://"+sPackagePath;
+					sModelFolder = sImplPackagePath + aDjlModelConfig.getModel_folder();
+					URL jarZipUrl = aImplClass.getResource(sModelFolder+".zip");
+					if(jarZipUrl!=null)
+					{
+						// 1. Define a directory inside DJL's default cache path (~/.djl.ai/cache)
+					    String userHome = System.getProperty("user.home");
+					    Path djlCacheDir = Paths.get(userHome, ".djl.ai", "cache", "jar-models", aDjlModelConfig.getModel_folder());
+					    
+					    // 2. Only unzip if the directory doesn't already exist
+					    if (!Files.exists(djlCacheDir)) {
+					        InputStream is = null;
+					        try {
+					        	Files.createDirectories(djlCacheDir);
+				        		is = getClass().getResourceAsStream(sModelFolder+".zip");
+					            if (is == null) {
+					                throw new RuntimeException("Could not find model zip in classpath: " + sModelFolder+".zip");
+					            }
+					            // 3. Use DJL's built-in ZipUtils to unpack the stream directly to the folder
+					            ZipUtils.unzip(is, djlCacheDir);
+					        } 
+					        catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					        finally
+					        {
+					        	if(is!=null)
+									try {
+										is.close();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+					        }
+					    }
+					    
+					    // 4. Pass the unzipped cache directory URI to DJL
+					    sModelFolder = djlCacheDir.toUri().toString();
+					}
+					
 				}
-				else
-				{
-					sPackagePath = urlLoader+sPackagePath;
-				}
-				
-				String sModelFolder = sPackagePath+"/model/";
-				aDjlModelConfig.setModel_folder( sModelFolder + aDjlModelConfig.getModel_folder());
-			
+				aDjlModelConfig.setModel_folder( sModelFolder);
 			}
 			
 			System.out.println("getModel_folder()="+aDjlModelConfig.getModel_folder());
@@ -97,7 +138,35 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				this.model_init_ok = true;
 			} catch (ModelNotFoundException | MalformedModelException | IOException e) {
 				// TODO Auto-generated catch block
+				this.model_init_ok = false;
 				System.err.println(sModelPath);
+				
+				if(sModelPath.contains("/.djl.ai/cache/"))
+				{
+					try {
+						URL urlModel = new URL(sModelPath);
+						File folder = new File(urlModel.getFile());
+						
+						if(folder.isDirectory())
+						{
+							for(File f: folder.listFiles())
+							{
+								if(f.delete())
+									System.out.println("  - Deleted : " + f.getAbsolutePath());
+							}
+							Thread.sleep(500);
+						}
+						System.out.println(" Deleting Folder - "+folder.getAbsolutePath());
+						if(folder.delete())
+							System.out.println("deleted.");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				e.printStackTrace();
 			}
 		}

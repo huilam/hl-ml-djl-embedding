@@ -228,6 +228,10 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
     
     public float[] getEmbedding(String aSentence) throws TranslateException
     {
+    	if(predictor==null)
+		{
+			throw new TranslateException("predictor==null, failed to init model");
+		}
     	return predictor.predict(aSentence);
     }
     
