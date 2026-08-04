@@ -53,7 +53,7 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				aDjlModelConfig.setModel_folder( sModelFolder);
 			}
 			
-			System.out.println("getModel_folder()="+aDjlModelConfig.getModel_folder());
+			//System.out.println("getModel_folder()="+aDjlModelConfig.getModel_folder());
 			
 			String sMlModelFileName = aDjlModelConfig.getModel_filename();
 			if(sMlModelFileName!=null && sMlModelFileName.trim().length()>0)
@@ -77,7 +77,7 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 					deleteDirRecursively(folder);
 					System.out.println("deleted.");
 					// Wait a moment for OS file locks to release if necessary
-					Thread.sleep(50); 
+					Thread.sleep(20); 
 					isCleared = !folder.exists();
 				}
 			} catch (Exception e) {
