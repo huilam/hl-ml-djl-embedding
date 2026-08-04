@@ -56,8 +56,6 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 			e.printStackTrace();
 		}
 		
-		System.out.println("propEmbedding.size()="+propEmbedding.size());
-		
 		if(propEmbedding!=null)
 		{
 			aDjlModelConfig = new DjlModelConfig();
@@ -123,7 +121,7 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 			if(aDjlModelConfig.getDevice_type()==null)
 				aDjlModelConfig.setDevice_type(Device.cpu());
 			
-			System.out.println("aDjlModelConfig="+aDjlModelConfig);
+			//System.out.println("aDjlModelConfig="+aDjlModelConfig);
 		}
 		return aDjlModelConfig;
 		
