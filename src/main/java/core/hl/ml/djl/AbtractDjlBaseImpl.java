@@ -24,47 +24,22 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 	//
 	protected DjlModelConfig djl_model_config 	= null;
 	protected boolean model_init_ok 			= false;
+	protected Class<?> model_impl_class = null;
 
 	@SuppressWarnings("rawtypes")
 	protected AbtractDjlBaseImpl(
 			Class aImplClass, 
-			DjlModelConfig aDjlModelConfig,
 			Criteria.Builder<I, O> aCriteriaBuilder)
 	{
-		if(aImplClass!=null && aDjlModelConfig!=null)
-		{
-			File folder = new File(aDjlModelConfig.getModel_folder());
-			if(!folder.exists())
-			{
-				URL jarUrl = aImplClass.getProtectionDomain().getCodeSource().getLocation();
-				String sImplPackagePath =  "/"+aImplClass.getPackageName().replace(".","/")+"/model/";
-				String sModelFolder = jarUrl + sImplPackagePath + aDjlModelConfig.getModel_folder();
-				//is jar
-				if(jarUrl.getPath().toLowerCase().endsWith(".jar"))
-				{
-					String sZipResName = sImplPackagePath + aDjlModelConfig.getModel_folder() +".zip";
-					
-					String sCacheModelPath = unpackToCache(aImplClass, sZipResName, aDjlModelConfig.getModel_folder());
-					if(sCacheModelPath!=null)
-					{
-						sModelFolder = sCacheModelPath;
-					}
-				}
-				aDjlModelConfig.setModel_folder( sModelFolder);
-			}
-			
-			//System.out.println("getModel_folder()="+aDjlModelConfig.getModel_folder());
-			
-			String sMlModelFileName = aDjlModelConfig.getModel_filename();
-			if(sMlModelFileName!=null && sMlModelFileName.trim().length()>0)
-			{
-				aCriteriaBuilder.optModelName(sMlModelFileName);
-			}
-			//
-			this.djl_model_config = aDjlModelConfig;
-			this.criteria_builder = aCriteriaBuilder;
-		}
+		this.model_impl_class = aImplClass;
+		this.criteria_builder = aCriteriaBuilder;
 	}
+	
+	protected void setDjlModelConfig(DjlModelConfig aDjlModelConfig)
+	{
+		this.djl_model_config = aDjlModelConfig;
+	}
+	
 	private boolean clearFromCache(String aModelFolder) {
 		boolean isCleared = false;
 		// Basic safety check
@@ -168,7 +143,28 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 		
 		if(djlModelConfig!=null && builder!=null)
 		{
-			String sModelPath = djlModelConfig.getModel_folder();
+			String sModelLoadPath = djlModelConfig.getModel_folder();
+			
+			File folder = new File(sModelLoadPath);
+			if(!folder.exists())
+			{
+				URL jarUrl = model_impl_class.getProtectionDomain().getCodeSource().getLocation();
+				String sImplPackagePath =  "/"+model_impl_class.getPackageName().replace(".","/")+"/model/";
+				String sModelFolder = jarUrl + sImplPackagePath + djlModelConfig.getModel_folder();
+				//is jar
+				if(jarUrl.getPath().toLowerCase().endsWith(".jar"))
+				{
+					String sZipResName = sImplPackagePath + djlModelConfig.getModel_folder() +".zip";
+					
+					String sCacheModelPath = unpackToCache(model_impl_class, sZipResName, djlModelConfig.getModel_folder());
+					if(sCacheModelPath!=null)
+					{
+						sModelFolder = sCacheModelPath;
+					}
+				}
+				sModelLoadPath = sModelFolder;
+			}
+			
 			/**
 			int iPos = sModelPath.indexOf(":");
 			if(iPos>-1)
@@ -176,8 +172,12 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				sModelPath = sModelPath.substring(iPos+1);
 			}
 			**/
-			builder.optModelUrls(sModelPath);
+			builder.optModelUrls(sModelLoadPath);
+			
 			builder.optEngine(djlModelConfig.getRuntime_engine());
+			
+			if(djlModelConfig.getModel_filename()!=null && djlModelConfig.getModel_filename().trim().length()>0)
+				builder.optModelName(djlModelConfig.getModel_filename());
 			
 			if(djlModelConfig.getDevice_type()!=null)
 				builder.optDevice(djlModelConfig.getDevice_type());
@@ -200,7 +200,7 @@ public abstract class AbtractDjlBaseImpl<I, O> {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				this.model_init_ok = false;
-				clearFromCache(sModelPath);
+				clearFromCache(sModelLoadPath);
 				
 			}
 		}

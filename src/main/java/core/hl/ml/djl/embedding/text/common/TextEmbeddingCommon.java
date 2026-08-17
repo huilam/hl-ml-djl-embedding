@@ -29,12 +29,12 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	@SuppressWarnings("rawtypes")
 	protected TextEmbeddingCommon(Class aImplClass, String aSubCfgPrefix)
 	{
-		DjlModelConfig aDjlModelConfig = initTextEmbeddingConfig(aImplClass, aSubCfgPrefix);
-		
 		super(aImplClass, 
-				aDjlModelConfig, 
 				Criteria.builder().setTypes(String.class, float[].class));
-			
+		
+		DjlModelConfig aDjlModelConfig = initTextEmbeddingConfig(aImplClass, aSubCfgPrefix);
+		setDjlModelConfig(aDjlModelConfig);
+		
 		initEmbeddingModel();
 		
 	}
