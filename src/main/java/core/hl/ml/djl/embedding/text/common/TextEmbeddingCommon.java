@@ -24,7 +24,6 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	
 	protected static String embedding_prop_filename 	= "hl-ml-djl.properties";
 	protected static String embedding_prop_key 			= "embedding-model";
-	protected int embedding_output_size 				= 0;
 	
 	@SuppressWarnings("rawtypes")
 	protected TextEmbeddingCommon(Class aImplClass, String aSubCfgPrefix)
@@ -135,7 +134,8 @@ public class TextEmbeddingCommon extends AbtractDjlBaseImpl<String, float[]>{
 	}
     
     public int getOutputEmbeddingSize() {
-		return embedding_output_size;
+    	return Integer.parseInt((String)
+				this.djl_model_config.getMLArgs().getOrDefault("embedding_size","0"));
 	}
 
 	protected double cosineSimilarity(float[] v1, float[] v2) {
