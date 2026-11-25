@@ -1,7 +1,7 @@
 <project name="qwen_embedding" default="jar_plugins" basedir=".">
 	<import file="./base_antbuild.xml"/>
 	
-	<property name="mlmodel.module" value="qwen3-embedding:0.6b"/>
+	<property name="mlmodel.module" value="qwen3-embedding_0.6b"/>
 	
 	<property name="mlmodel.package.path" value="hl/ml/djl/embedding/text/impl/alibaba/model"/>
 	<property name="jar_suffix" value="_${mlmodel.module}"/>
